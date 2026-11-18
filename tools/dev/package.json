@@ -1,0 +1,1 @@
+{"name":"coop-dev-tools","private":true,"description":"Checks run before a release. Not deployed.","dependencies":{"puppeteer-core":"^24.0.0"}}

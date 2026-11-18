@@ -1,0 +1,23 @@
+// chicken derby chaos photos, drawn: ramp ahead, tractor, mud, knocked off rider with a free mount, angry hens, rotten egg, egg baskets
+const puppeteer=require('puppeteer-core');const sleep=ms=>new Promise(r=>setTimeout(r,ms));const OUT=__dirname+'/out/';
+(async()=>{const b=await puppeteer.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true,args:['--use-gl=angle','--enable-unsafe-swiftshader','--ignore-gpu-blocklist']});
+ const p=await b.newPage();await p.setViewport({width:1280,height:720});p.on('pageerror',e=>console.log('PAGEERR',e.message));
+ await p.evaluateOnNewDocument(()=>{localStorage.clear();localStorage.setItem('loop_demo','1');localStorage.setItem('loop_tut','1');localStorage.setItem('loop_mute','1');});
+ await p.goto('http://localhost:8766/index.html?browser=1',{waitUntil:'load'});await sleep(2800);
+ await p.addStyleTag({content:'#menu,#toast,#upd,#intro{display:none!important}'});
+ await p.evaluate(()=>{diff=1;vSel=true;MODE='r';startMatch();});await sleep(4400);
+ const at=(s,lat,still)=>p.evaluate((s,lat,still)=>{const q=trkAt(s,lat);player.x=q.x;player.z=q.z;player.ti=q.i;player.aimYaw=player.yaw=q.yaw;player.aimPitch=-.12;player.vx=player.vz=0;player.rs=s;player.mx=s;
+   if(still){window.__hold=setInterval(()=>{player.x=q.x;player.z=q.z;player.vx=player.vz=0;player.aimYaw=q.yaw;},10);}},s,lat,still);
+ const free=()=>p.evaluate(()=>clearInterval(window.__hold));
+ const shot=n=>p.screenshot({path:OUT+'chaos_'+n+'.jpg',type:'jpeg',quality:78});
+ await at(30,0,true);await sleep(500);await shot('ramp');await free();
+ await at(73,0,true);await sleep(500);await shot('baskets');await free();
+ await at(118,1,true);await p.evaluate(()=>{RC.tr.lat=-1;RC.tr.wait=9;});await sleep(500);await shot('tractor');await free();
+ await at(332,0,true);await sleep(500);await shot('mud');await free();
+ await at(20,0,false);await p.evaluate(()=>{for(const c of chickens)if(!c.isP){c.hidden=true;}});await sleep(300);
+ await p.evaluate(()=>{player.vx=Math.sin(player.yaw)*13;player.vz=Math.cos(player.yaw)*13;knockOff(player,Math.cos(player.yaw),-Math.sin(player.yaw),'TEST!');});await sleep(450);await shot('knocked');
+ console.log('knocked',await p.evaluate(()=>({dis:player.dis,mt:player.mt&&[+player.mt.x.toFixed(1),+player.mt.z.toFixed(1)],me:[+player.x.toFixed(1),+player.z.toFixed(1)]})));
+ await sleep(3500);console.log('after 4s',await p.evaluate(()=>({dis:player.dis,msg:$('msg').textContent})));
+ await p.evaluate(()=>{for(const c of chickens)c.hidden=false;const o=chickens[3];const q=trkAt(player.rs+9,0);o.x=q.x;o.z=q.z;o.ti=q.i;o.rs=player.rs+9;o.lap=player.lap;o.mx=o.rs;RC.hen.push({x:player.x,y:3,z:player.z,tg:o,t:0,o:player});});await sleep(300);await shot('hens');
+ await p.evaluate(()=>{player.item='egg';useItem(player);});await sleep(200);await p.evaluate(()=>{player.aimYaw+=Math.PI;});await sleep(400);await shot('egg');
+ await b.close();process.exit(0);})();
