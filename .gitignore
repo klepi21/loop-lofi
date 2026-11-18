@@ -14,3 +14,6 @@ move/build
 move/scripts/node_modules
 server/sui-data.json
 server/sui.config.json
+tools/trailer/music
+tools/trailer/out
+tools/trailer/node_modules

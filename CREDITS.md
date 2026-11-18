@@ -1,7 +1,7 @@
 # Credits
 
 ## Game
-LOOP is built on the engine of Chickens Out of Patience (same author). The LOOP brand art is in `brand/`.
+LOOP runs on a hand written WebGL2 engine by the same author. The LOOP brand art is in `brand/`.
 The yeti is drawn in the spirit of Lofi the Yeti (lofitheyeti.com), made for the CLAY hackathon.
 
 ## Sound effects
