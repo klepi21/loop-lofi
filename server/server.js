@@ -89,7 +89,24 @@ setInterval(()=>{const now=Date.now();
 // one-time sign-in hand-off for the iOS home screen app (Google returns into a separate Safari sheet)
 const HO=new Map(),RL=new Map(),RS=new Map();setInterval(()=>{const n=Date.now();for(const [k,v] of HO)if(n-v.t>180000)HO.delete(k);for(const [k,v] of RL)if(!v.length||n-v[v.length-1]>60000)RL.delete(k);RS.clear();},30000);
 const CORS={'Access-Control-Allow-Origin':'*','Access-Control-Allow-Headers':'Content-Type','Access-Control-Allow-Methods':'GET,POST,OPTIONS','Cache-Control':'no-store'};
+// LOOP on Sui (devnet): wallets, sponsored gas, signed match results, tournaments. Loaded on the side so the game runs without it.
+let SUI=null;import('./sui.mjs').then(m=>{SUI=m;console.log('sui on');}).catch(e=>console.error('sui off',e.message));
+function suiHttp(req,res){const J=(c,o)=>{res.writeHead(c,Object.assign({'Content-Type':'application/json'},CORS));res.end(JSON.stringify(o));};
+  if(req.method==='OPTIONS'){res.writeHead(204,CORS);res.end();return;}
+  if(!SUI){J(503,{err:'Sui is starting, try again in a moment'});return;}
+  const u=new URL(req.url,'http://x'),path=u.pathname.replace(/^\/sui\//,''),ip=String(req.headers['x-forwarded-for']||req.socket.remoteAddress||'').split(',')[0];
+  const go=(f)=>Promise.resolve().then(f).then(o=>J(200,o),e=>J(400,{err:String(e&&e.message||e).slice(0,240)}));
+  if(req.method==='GET'){
+    if(path==='config'){J(200,SUI.config());return;}
+    if(path==='wallet'){go(()=>SUI.wallet(String(u.searchParams.get('a')||'').toLowerCase()));return;}
+    if(path==='tours'){go(()=>SUI.tournaments());return;}
+    if(path==='board'){J(200,SUI.leaderboard());return;}
+    if(path==='epoch'){go(()=>SUI.epoch());return;}
+    J(404,{err:'not found'});return;}
+  let b='';req.on('data',c=>{b+=c;if(b.length>65536)req.destroy();});req.on('end',()=>{let d={};try{d=JSON.parse(b||'{}');}catch(e){J(400,{err:'bad json'});return;}
+    if(path==='salt')go(()=>SUI.salt(d.jwt));else if(path==='prepare')go(()=>SUI.prepare(d,ip));else if(path==='exec')go(()=>SUI.execute(d));else if(path==='admin')go(()=>SUI.adminCall(d));else J(404,{err:'not found'});});}
 const srv=http.createServer((req,res)=>{
+  if(req.url.startsWith('/sui/')){suiHttp(req,res);return;}
   if(req.url.startsWith('/handoff')){
     if(req.method==='OPTIONS'){res.writeHead(204,CORS);res.end();return;}
     if(req.method==='POST'){let b='';req.on('data',c=>{b+=c;if(b.length>6000)req.destroy();});req.on('end',()=>{let ok=false;try{const d=JSON.parse(b);
@@ -139,7 +156,7 @@ wss.on('connection',ws=>{
         if(ver<5){room=null;no('A new version is out. Close the game and open it again to play online');return;}
         const P=typeof m[7]==='string'&&TICK.has(m[7])?PRES.get(TICK.get(m[7])):null;let pref=-1;
         if(P&&P.party){const pt=PARTY.get(P.party);if(pt)for(const u of pt.mem){const q=PRES.get(u);if(q&&q!==P&&q.room===room&&q.slot){pref=q.slot<=4?0:1;break;}}}
-        slot=room.R.join(name,look,cos,pref,Math.min(999,Math.max(0,(m[8]|0)||(P?P.lvl|0:0))));if(!slot){room=null;no('Room is full, try again');return;}
+        ws.addr=typeof m[9]==='string'&&/^0x[0-9a-f]{64}$/.test(m[9])?m[9]:'';ws.pname=name;slot=room.R.join(name,look,cos,pref,Math.min(999,Math.max(0,(m[8]|0)||(P?P.lvl|0:0))));if(!slot){room=null;no('Room is full, try again');return;}
         if(code&&room.holds.length)room.holds.shift();
         room.clients.set(slot,ws);players++;if(P){if(P.ws&&P.ws!==ws){try{P.ws.close();}catch(e){}}pres=P;P.ws=ws;P.room=room;P.slot=slot;P.t=now;}
         {const md=mday();md.joins++;if(players>md.peak)md.peak=players;if(room.duel)md.duel++;if(room.mode==='t')md.team=(md.team||0)+1;if(room.mode==='c')md.ctf=(md.ctf||0)+1;if(code)md.code++;mDirty=true;}
@@ -157,7 +174,7 @@ setInterval(()=>{const now=process.hrtime.bigint();let dt=Number(now-last)/1e9;l
     try{r.R.tick(dt);}catch(e){console.error('tick error room',r.id,e);continue;}
     // players who stood still too long go out, a bot takes the seat
     {const ks=r.R.kicks();if(ks)for(const s of ks){const w=r.clients.get(s);if(!w)continue;mAdd('afk');try{w.send(JSON.stringify({e:[['x','You were taken out for standing still. Jump back in when you are ready']]}));w.close();}catch(e){}}}
-    const ev=r.R.drain(),snap=tickN%3===0;if(!ev&&!snap)continue;if(ev)for(const e of ev)if(e[0]==='en')mAdd('matches');
+    const ev=r.R.drain(),snap=tickN%3===0;if(!ev&&!snap)continue;if(ev)for(const e of ev)if(e[0]==='en'){mAdd('matches');if(SUI){try{const rs=r.R.results();for(const q of rs){const w=r.clients.get(q.slot);if(w&&w.addr)SUI.recordResult(w.addr,{kills:q.kills,deaths:q.deaths,won:q.won,name:w.pname,map:q.map});}}catch(err){console.error('results',err.message);}}}
     const o={};if(ev)o.e=ev;if(snap)o.u=r.R.snap();const s=JSON.stringify(o);
     for(const w of r.clients.values())if(w.readyState===1&&w.bufferedAmount<262144)w.send(s);
     for(const w of r.specs)if(w.readyState===1&&w.bufferedAmount<262144)w.send(s);}

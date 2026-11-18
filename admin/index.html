@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>LOOP Admin</title><link rel="icon" href="/icon-192.png">
+<style>
+@font-face{font-family:PG;src:url(/landing/LuckiestGuy.woff2) format('woff2');font-display:swap}
+:root{--navy:#0B1F44;--blue:#2A6BFF;--cyan:#00D1FF;--ice:#E6F1FF;--lav:#A9B8FF}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(120% 80% at 20% 0%,#1a4796,#0B1F44 60%);color:var(--ice);font:600 14px/1.45 ui-rounded,"SF Pro Rounded",system-ui,sans-serif}
+header{display:flex;align-items:center;gap:14px;padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.1)}header img{height:44px}header h1{font:400 24px PG,sans-serif;letter-spacing:1px;margin:0;color:var(--cyan)}
+header .sp{flex:1}button{font:400 13px PG,sans-serif;letter-spacing:1px;color:var(--navy);background:linear-gradient(#7FE9FF,#2A9BFF);border:0;border-radius:12px;padding:8px 14px;cursor:pointer;box-shadow:0 3px 0 #163F9E}
+button.alt{color:var(--ice);background:rgba(255,255,255,.08);box-shadow:none;border:1px solid rgba(255,255,255,.3)}button:disabled{opacity:.5}
+main{max-width:1180px;margin:0 auto;padding:18px;display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
+.card{background:rgba(11,31,68,.6);border:1px solid rgba(255,255,255,.14);border-radius:18px;padding:14px 16px}.card.w{grid-column:1/-1}
+h2{font:400 15px PG,sans-serif;letter-spacing:1.5px;margin:0 0 10px;color:var(--lav)}
+.k{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}.k div{background:rgba(255,255,255,.06);border-radius:12px;padding:10px}.k b{display:block;font:400 26px PG,sans-serif;color:var(--cyan)}.k span{font-size:12px;opacity:.8}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{text-align:left;padding:6px 6px;border-bottom:1px solid rgba(255,255,255,.08)}th{font-size:11px;letter-spacing:1px;opacity:.7}
+.mono{font-family:ui-monospace,Menlo,monospace;font-size:12px;word-break:break-all}a{color:#7FE9FF}
+input{font:inherit;color:var(--ice);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:8px 10px;width:100%;margin:4px 0 8px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.row input{width:auto;flex:1}.msg{margin-top:8px;color:#9FE6FF}.msg.err{color:#ff8a7a}
+#login{max-width:420px;margin:12vh auto;text-align:center}#login img{width:240px}
+</style></head><body>
+<div id="login" class="card" style="display:none"><img src="/landing/img/logo.webp" alt="LOOP"><h2 style="margin-top:12px">OWNER ONLY</h2><input id="tok" type="password" placeholder="Admin token" autocomplete="off"><button id="go">OPEN</button><div id="lmsg" class="msg"></div></div>
+<div id="app" style="display:none">
+<header><img src="/landing/img/wordmark.webp" alt="LOOP"><h1>ADMIN</h1><span class="sp"></span><button class="alt" id="ref">REFRESH</button><button class="alt" id="out">LOCK</button></header>
+<main>
+ <section class="card w"><h2>RIGHT NOW</h2><div class="k" id="now"></div></section>
+ <section class="card"><h2>ON CHAIN (SUI DEVNET)</h2><div id="chain"></div></section>
+ <section class="card"><h2>LAST 14 DAYS</h2><table id="days"></table></section>
+ <section class="card w"><h2>TOURNAMENTS</h2>
+  <div class="row"><input id="tn" placeholder="Name, for example Weekly Cup" value=""><input id="td" type="number" min="1" max="30" value="7" style="max-width:90px" title="days"><button id="tc">CREATE</button></div>
+  <table id="tours"></table><div id="tmsg" class="msg"></div></section>
+ <section class="card"><h2>THIS WEEK, BY SCORE</h2><table id="board"></table></section>
+ <section class="card"><h2>ROOMS</h2><table id="rooms"></table></section>
+ <section class="card w"><h2>ACTIVITY ON CHAIN</h2><table id="log"></table></section>
+</main></div>
+<script>
+const API='https://43-165-5-114.sslip.io/loop';const $=id=>document.getElementById(id);
+let TOK='';try{TOK=localStorage.getItem('loop_admin')||'';}catch(e){}
+const esc=v=>String(v==null?'':v).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const short=a=>a?a.slice(0,8)+'...'+a.slice(-6):'';const sui=m=>(Number(m)/1e9).toFixed(3);
+const scan=(a,obj)=>'https://suiscan.xyz/devnet/'+(obj?'object/':'account/')+a;const tx=d=>'https://suiscan.xyz/devnet/tx/'+d;
+async function admin(action,args){const r=await fetch(API+'/sui/admin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:TOK,action,args})});const d=await r.json();if(d.err)throw new Error(d.err);return d;}
+async function load(){
+  let st=null,mt=null,ch=null;
+  try{st=await fetch(API+'/status',{cache:'no-store'}).then(r=>r.json());}catch(e){}
+  try{mt=await fetch(API+'/metrics',{cache:'no-store'}).then(r=>r.json());}catch(e){}
+  try{ch=await admin('stats');}catch(e){if(/not allowed/.test(e.message)){lock('Wrong token');return;}}
+  $('login').style.display='none';$('app').style.display='block';
+  const today=mt&&mt.days?mt.days[new Date().toISOString().slice(0,10)]||{}:{};
+  $('now').innerHTML=[['Players online',st?st.players:'?'],['Rooms',st?st.rooms.length:'?'],['Matches today',today.matches||0],['Yeti NFTs minted',ch?ch.minted:'?'],['Results waiting',ch?ch.pending:'?'],['Sponsor wallet',ch?sui(ch.gameBalance)+' SUI':'?']].map(([k,v])=>'<div><b>'+esc(v)+'</b><span>'+k+'</span></div>').join('');
+  if(ch){$('chain').innerHTML='<table><tr><td>Package</td><td class="mono"><a target="_blank" href="'+scan(ch.packageId,1)+'">'+short(ch.packageId)+'</a></td></tr><tr><td>Registry</td><td class="mono"><a target="_blank" href="'+scan(ch.registryId,1)+'">'+short(ch.registryId)+'</a></td></tr><tr><td>Game and sponsor</td><td class="mono"><a target="_blank" href="'+scan(ch.gameAddress)+'">'+short(ch.gameAddress)+'</a> '+sui(ch.gameBalance)+' SUI</td></tr><tr><td>Admin</td><td class="mono"><a target="_blank" href="'+scan(ch.adminAddress)+'">'+short(ch.adminAddress)+'</a> '+sui(ch.adminBalance)+' SUI</td></tr></table>';
+    $('tours').innerHTML='<tr><th>NAME</th><th>POT</th><th>IN</th><th>ENDS</th><th></th></tr>'+(ch.tours.length?ch.tours.map(t=>'<tr><td><a target="_blank" href="'+scan(t.id,1)+'">'+esc(t.name)+'</a></td><td>'+sui(t.pot)+' SUI</td><td>'+t.entrants.length+'</td><td>'+new Date(t.ends).toLocaleString()+'</td><td class="row">'+(t.paid?'paid':'<input id="f_'+t.id+'" type="number" step="0.1" min="0.1" value="1" style="max-width:80px"><button data-f="'+t.id+'">FUND</button><button class="alt" data-p="'+t.id+'">PAY TOP 3</button>')+'</td></tr>').join(''):'<tr><td colspan="5">No tournaments yet.</td></tr>');
+    $('board').innerHTML='<tr><th>#</th><th>PLAYER</th><th>XP</th><th>BONKS</th><th>WINS</th></tr>'+(ch.leaderboard.length?ch.leaderboard.slice(0,20).map((q,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(q.name||'')+' <span class="mono"><a target="_blank" href="'+scan(q.addr)+'">'+short(q.addr)+'</a></span></td><td>'+q.xp+'</td><td>'+q.kills+'</td><td>'+q.wins+'</td></tr>').join(''):'<tr><td colspan="5">No online matches with a wallet yet.</td></tr>');
+    $('log').innerHTML='<tr><th>WHEN</th><th>WHAT</th><th>WHO</th><th>TX</th></tr>'+(ch.log.length?ch.log.map(l=>'<tr><td>'+new Date(l.t).toLocaleString()+'</td><td>'+esc(l.k)+(l.name?' '+esc(l.name):'')+(l.sui?' '+l.sui+' SUI':'')+'</td><td class="mono">'+(l.sender?'<a target="_blank" href="'+scan(l.sender)+'">'+short(l.sender)+'</a>':'')+'</td><td class="mono">'+(l.digest?'<a target="_blank" href="'+tx(l.digest)+'">'+short(l.digest)+'</a>':'')+'</td></tr>').join(''):'<tr><td colspan="4">Nothing yet.</td></tr>');}
+  if(mt&&mt.days){const ks=Object.keys(mt.days).sort().slice(-14).reverse();const cols=['opens','joins','matches','afk'];
+    $('days').innerHTML='<tr><th>DAY</th>'+cols.map(c=>'<th>'+c.toUpperCase()+'</th>').join('')+'</tr>'+ks.map(k=>'<tr><td>'+k+'</td>'+cols.map(c=>'<td>'+(mt.days[k][c]||0)+'</td>').join('')+'</tr>').join('');}
+  if(st)$('rooms').innerHTML='<tr><th>ROOM</th><th>MODE</th><th>HUMANS</th><th>STATE</th><th>TIME</th></tr>'+st.rooms.map(r=>'<tr><td>'+r.id+'</td><td>'+esc(r.mode)+'</td><td>'+r.humans+'</td><td>'+esc(r.state)+'</td><td>'+r.t+'</td></tr>').join('');}
+function lock(m){$('app').style.display='none';$('login').style.display='block';$('lmsg').textContent=m||'';}
+$('go').onclick=()=>{TOK=$('tok').value.trim();try{localStorage.setItem('loop_admin',TOK);}catch(e){}load();};
+$('tok').onkeydown=e=>{if(e.key==='Enter')$('go').click();};
+$('out').onclick=()=>{TOK='';try{localStorage.removeItem('loop_admin');}catch(e){}lock('');};$('ref').onclick=load;
+const say=(m,err)=>{$('tmsg').textContent=m;$('tmsg').className='msg'+(err?' err':'');};
+$('tc').onclick=async()=>{const b=$('tc');b.disabled=true;say('Creating on Sui...');try{const d=+$('td').value||7;await admin('create',{name:$('tn').value||'Weekly Cup',starts:Date.now(),ends:Date.now()+d*86400e3});say('Tournament created.');load();}catch(e){say(e.message,true);}b.disabled=false;};
+document.addEventListener('click',async e=>{const f=e.target.dataset&&e.target.dataset.f,p=e.target.dataset&&e.target.dataset.p;if(!f&&!p)return;e.target.disabled=true;
+  try{if(f){say('Funding...');await admin('fund',{tour:f,sui:+$('f_'+f).value});say('Funded from the sponsor wallet.');}else{say('Paying out...');const r=await admin('payout',{tour:p});say('Paid: '+r.winners.map(w=>short(w.addr)+' '+sui(w.mist)+' SUI').join(', '));}load();}catch(err){say(err.message,true);e.target.disabled=false;}});
+if(TOK)load();else lock('');setInterval(()=>{if(TOK&&$('app').style.display==='block')load();},30000);
+</script></body></html>

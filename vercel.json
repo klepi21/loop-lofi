@@ -1,8 +1,10 @@
 {
  "routes": [
+  {"src": "^/$", "dest": "/landing/index.html"},
+  {"src": "^/game/?$", "dest": "/index.html"},
   {"src": "^/r/[A-Za-z]{4}/?$", "dest": "/index.html"},
   {"src": "^/p/[0-9a-fA-F]{12}/?$", "dest": "/index.html"},
-  {"src": "^/game/?$", "dest": "/index.html"},
+  {"src": "^/admin$", "status": 308, "headers": {"Location": "/admin/"}},
   {"handle": "filesystem"}
  ]
 }

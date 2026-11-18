@@ -175,6 +175,8 @@ A typical browser flow:
 
 The server should only sponsor calls to this package. Check `tx.getData().commands` before co-signing.
 When the gas owner pays from its address balance, the SDK sets a `ValidDuring` expiration of the current epoch plus one, so build the transaction and sign it promptly.
+Error handling: a Move abort, such as `EStaleSeq` on a replayed result or `EBadSignature`, usually surfaces as an **exception thrown by `tx.build()`**, because the SDK simulates during resolution. It does not come back as a `FailedTransaction` result. Server code must catch build errors and also check `result.$kind`.
+
 See `scripts/lib.mjs` (`runSponsored`) and `scripts/e2e.mjs`.
 
 ## Current devnet deployment
@@ -199,7 +201,10 @@ The game should always read IDs from `sui.config.json` instead of hardcoding the
 
 ## Devnet resets and `publish.sh`
 
-Devnet is wiped periodically, roughly weekly. A wipe deletes every object, package and balance, but the keypairs in `.secrets` stay valid.
+Devnet is wiped on each devnet release, about every two weeks. Recent devnet tags were Sep 14, Sep 28, Oct 12, Oct 26 and Nov 9 2026, so the next wipe is likely around Nov 23 2026.
+A wipe deletes every object, package, balance and **every player Yeti**. The keypairs in `.secrets` stay valid.
+After republishing, the game must re-read `sui.config.json` because every ID changes.
+A new devnet release usually needs a matching CLI as well. If `publish.sh` fails on protocol or RPC errors, download that `devnet-vX` tag and set `SUI_BIN`.
 After a wipe, or whenever you want a fresh deployment:
 
 ```bash

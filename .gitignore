@@ -12,3 +12,5 @@ server/metrics.json
 .secrets
 move/build
 move/scripts/node_modules
+server/sui-data.json
+server/sui.config.json

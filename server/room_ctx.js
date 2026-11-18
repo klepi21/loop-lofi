@@ -37,6 +37,9 @@ function rosterList(){const r=[];for(let i=1;i<chickens.length;i++){const c=chic
 function newMatch(arena){OUT.push(['st',arena,180,3.3]);if(arenaI!==arena)buildWorld(arena);for(const c of chickens){c.late=false;if(!c.net)c.bcos=botCos();}botNames(false);pickCands();startMatch();if(typeof __MATCHT==='number')matchT=__MATCHT;hidePlayer();hideOff();applyRoster();OUT.push(['ro',rosterList()]);wasOver=false;overClock=0;}
 function num(v){return typeof v==='number'&&isFinite(v);}
 globalThis.ROOM={
+  // what each human did in the match that just ended, for on chain stats
+  results(){const L=[];const tm=teamM();let best=0;const tk=[0,0];for(let i=1;i<chickens.length;i++){const c=chickens[i];if(c.off)continue;best=Math.max(best,c.kills|0);if(c.team>=0)tk[c.team]+=c.kills|0;}
+    for(let i=1;i<chickens.length;i++){const c=chickens[i];if(!c.net)continue;const won=tm?(c.team>=0&&tk[c.team]>tk[1-c.team]):((c.kills|0)>=best&&best>0);L.push({slot:i,kills:c.kills|0,deaths:c.deaths|0,won,map:AR?AR.name:''});}return L;},
   bots(){return {lvl:RLVL,seats:chickens.slice(1).map(c=>[c.net?'human':'bot',c.lvl|0,+(c.skill||0).toFixed(2),c.team])};},
   humans(){let n=0;for(let i=1;i<chickens.length;i++)if(chickens[i].net)n++;return n;},
   init(arena,mode){MODE=mode==='d'||mode==='t'||mode==='c'?mode:'f';DUEL=MODE==='d';buildWorld(arena%NAR);for(const c of chickens)c.bcos=botCos();botNames(true);pickCands();startMatch();if(typeof __MATCHT==='number')matchT=__MATCHT;hidePlayer();hideOff();applyRoster();OUT.length=0;},

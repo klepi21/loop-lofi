@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<script>/* sign in returns and invite links belong to the game, not the landing page */(function(){var s=location.search,h=location.hash;if(/[?&](room|party|srv)=/.test(s)||/[#&](id_token|access_token|error)=/.test(h)){location.replace('/game'+s+h);}})();</script>
+<script>/* sign in returns and invite links belong to the game, not the landing page */(function(){var s=location.search,h=location.hash,st=false;try{st=navigator.standalone===true||matchMedia('(display-mode:standalone)').matches||matchMedia('(display-mode:fullscreen)').matches;}catch(e){}if(/[?&](room|party|srv)=/.test(s)||/[#&](id_token|access_token|error)=/.test(h)||st){location.replace('/game'+s+h);}})();</script>
 <title>LOOP, Lofi Out Of Patience. Free yeti snowball battle game</title>
 <meta name="description" content="LOOP (Lofi Out Of Patience) is a free yeti snowball battle game for your desktop browser. Eight player arena fights in the Himalayas, three minute matches, teams, capture the crystal and 1 v 1. Built on Sui devnet for the CLAY hackathon.">
 <link rel="canonical" href="https://loop-lofi.vercel.app/">
@@ -47,7 +47,7 @@ h1,h2,h3,.lg{font-family:"Luckiest",ui-rounded,system-ui,sans-serif;font-weight:
 a{color:var(--cyan)}
 img{max-width:100%;height:auto;display:block}
 .wrap{max-width:1180px;margin:0 auto;padding:0 var(--pad)}
-#snow{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+#snow{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:30}
 main,nav,footer{position:relative;z-index:2}
 
 /* nav */
@@ -65,7 +65,7 @@ header{position:relative;padding:130px 0 70px;overflow:hidden;background:radial-
 header:after{content:"";position:absolute;left:0;right:0;bottom:0;height:120px;background:linear-gradient(transparent,var(--navy));pointer-events:none}
 header .ridge{position:absolute;left:0;right:0;bottom:0;height:200px;opacity:.5;pointer-events:none}
 .hero{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(24px,4vw,56px);align-items:center}
-.hero h1 img{width:min(100%,440px);filter:drop-shadow(0 18px 30px rgba(0,10,40,.55)) drop-shadow(0 0 40px rgba(0,209,255,.18));animation:pop .9s cubic-bezier(.2,1.4,.4,1) both}
+.hero h1 img{width:min(100%,380px);filter:drop-shadow(0 18px 30px rgba(0,10,40,.55)) drop-shadow(0 0 40px rgba(0,209,255,.18));animation:pop .9s cubic-bezier(.2,1.4,.4,1) both}
 @keyframes pop{0%{transform:scale(.6) translateY(20px);opacity:0}100%{transform:none;opacity:1}}
 .tagline{font-family:"Luckiest",sans-serif;font-size:clamp(30px,3.5vw,48px);letter-spacing:.04em;line-height:1.05;margin:18px 0 10px;color:var(--ice);text-shadow:0 0 28px rgba(0,209,255,.45),0 4px 0 #0a3d8f}
 .tagline span{color:var(--cyan);white-space:nowrap}
@@ -98,7 +98,7 @@ header .ridge{position:absolute;left:0;right:0;bottom:0;height:200px;opacity:.5;
 .stats span{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--lav)}
 
 /* sections */
-section{padding:clamp(60px,8vw,104px) 0;position:relative}
+section{padding:clamp(60px,8vw,104px) 0;position:relative;scroll-margin-top:76px}
 .eyebrow{font-family:"Luckiest",sans-serif;font-size:14px;letter-spacing:.24em;color:var(--cyan);margin-bottom:10px}
 h2{font-size:clamp(32px,4.8vw,54px);color:var(--ice);margin-bottom:14px;text-shadow:0 4px 0 rgba(10,40,110,.8)}
 .lead{font-size:clamp(16px,1.7vw,18.5px);color:var(--muted);max-width:640px;margin:0 0 34px}
@@ -217,7 +217,7 @@ footer small a{color:var(--lav)}
 @media (max-width:860px){
   header{padding:110px 0 56px}
   .hero{grid-template-columns:1fr;text-align:center}
-  .hero h1 img{margin:0 auto;width:min(80%,360px)}
+  .hero h1 img{margin:0 auto;width:min(78%,320px)}
   .pitch{margin-left:auto;margin-right:auto}
   .cta,.pills{justify-content:center}
   .stage{max-width:560px;width:92%;margin:12px auto 40px}
@@ -261,7 +261,7 @@ footer small a{color:var(--lav)}
   <svg class="ridge" viewBox="0 0 1440 200" preserveAspectRatio="none" aria-hidden="true"><path d="M0 200 L0 150 L120 90 L210 130 L330 40 L450 120 L560 70 L690 140 L820 30 L940 110 L1060 60 L1180 130 L1300 80 L1440 120 L1440 200Z" fill="#163a7a"/><path d="M0 200 L0 170 L160 130 L300 165 L470 110 L640 160 L790 120 L980 170 L1150 125 L1320 160 L1440 140 L1440 200Z" fill="#0f2b5e"/></svg>
   <div class="wrap hero">
     <div>
-      <h1><img src="/landing/img/logo.webp" alt="LOOP, Lofi Out Of Patience" width="447" height="348" fetchpriority="high"></h1>
+      <h1><img src="/landing/img/logo.webp" alt="LOOP, Lofi Out Of Patience" width="447" height="378" fetchpriority="high"></h1>
       <p class="tagline">CHILL VIBES. <span>COLD HITS.</span></p>
       <p class="pitch">A free snowball battle in the high Himalayas. Eight yetis, three minutes, one very calm yeti who has run out of patience.</p>
       <div class="cta">
@@ -366,11 +366,11 @@ footer small a{color:var(--lav)}
   <div class="rv"><div class="eyebrow">HOW IT WORKS ON SUI</div>
   <h2>A yeti that remembers every bonk</h2>
   <p class="lead">LOOP uses Sui so your yeti and your best moments are really yours. No seed phrases, no gas to buy. Built for the hackathon and running on Sui devnet.</p>
-  <div class="badge"><i></i>Live on Sui devnet</div></div>
+  <div class="badge"><i></i>On Sui devnet</div></div>
   <div class="chain">
     <div class="glass rv"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg></div><h3>Sign in with Google</h3><p>zkLogin turns your Google account into a Sui wallet. No seed phrase to write down, no extension to install.</p></div>
     <div class="glass rv"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3c3 4 6 7 6 11a6 6 0 0 1-12 0c0-4 3-7 6-11z"/></svg></div><h3>Sponsored gas</h3><p>Every transaction is paid for by the game. You never need SUI to play.</p></div>
-    <div class="glass rv"><div class="ic"><svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg></div><h3>Free tournaments</h3><p>Free entry. The prize pot is sponsored and held by a Move contract, which pays the winners when the bracket ends.</p></div>
+    <div class="glass rv"><div class="ic"><svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg></div><h3>Free tournaments</h3><p>Free entry. The prize pot is sponsored and held by a Move contract, which pays the winners when the tournament ends.</p></div>
     <div class="glass wide rv"><div class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div><div><h3>Yeti NFTs with their own history</h3><p>Your yeti is an NFT that carries its own kills, wins and level. After each match the server signs the result and the stats are written on chain. Trade your yeti through Kiosk and its record goes with it.</p></div></div>
     <div class="glass rv"><div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg></div><h3>Clip NFTs on Walrus</h3><p>Your best kill clip is stored on Walrus and minted as a Clip NFT you can keep or show off.</p></div>
   </div>
