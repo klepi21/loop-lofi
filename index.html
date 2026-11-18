@@ -2402,7 +2402,7 @@ async function authBoot(){const h=location.hash;if(/state=loopzk/.test(h))return
   else if(/[#&]error=/.test(h))history.replaceState(null,'',location.pathname+location.search);
   acctUI();if(sess)pullProfile();else hoPoll();}
 function profUI(){const lv=lvlOf(profile.xp),a=lvlXp(lv),b=lvlXp(lv+1);$('plv').textContent=lv;$('pxp').firstChild.style.width=Math.round((profile.xp-a)/(b-a)*100)+'%';
-  $('pname').textContent=sess&&sess.has?String(sess.name).toUpperCase():sess?'PLAYER':'GUEST YETI';$('pst').textContent=sess||demo?'LEVEL '+lv+'    '+(profile.xp-a)+' / '+(b-a)+' XP':'SIGN IN TO PLAY ONLINE';}
+  {const W=LSUI()&&LSUI().st;$('pname').textContent=W&&W.addr?(W.kind==='zk'?(String(W.name||'YETI').toUpperCase()+' '+W.addr.slice(2,6).toUpperCase()):'GUEST WALLET '+W.addr.slice(2,6).toUpperCase()):'NOT CONNECTED';}$('pst').textContent=sess||demo?'LEVEL '+lv+'    '+(profile.xp-a)+' / '+(b-a)+' XP':'SIGN IN TO PLAY ONLINE';}
 function refreshMenu(){const L=ROSTER[sel];$('cname').textContent=L.name.toUpperCase();$('ctag').textContent=L.tag;$('aname').textContent=AR.name.toUpperCase();$('adesc').textContent=AR.desc;profUI();unSeen();chUI();}
 /* ---------- stats page ---------- */
 const ORDS=['1ST','2ND','3RD','4TH','5TH','6TH','7TH','8TH'],RANKS=[[1,'FRESH BOMB'],[3,'CHICK'],[6,'YARD FIGHTER'],[10,'ROOSTER'],[15,'TOP ROOSTER'],[20,'LEGEND OF THE YARD']];
@@ -3342,7 +3342,7 @@ function suiUI(){const L=LSUI();if(!$('sui'))return;const st=L?L.st:null,on=!!(s
   $('suib').innerHTML=b;}
 function suiOpen(){suiMsg='';pgOpen('sui');suiUI();const L=LSUI();if(!L)return;L.refresh();L.tours().then(x=>{suiTours=x;suiUI();}).catch(()=>{suiTours=[];suiUI();});L.board().then(x=>{suiBoard=x;suiUI();}).catch(()=>{suiBoard=[];suiUI();});}
 if(!SRV&&typeof window!=='undefined'){
-  window.addEventListener('loopsui',()=>{suiUI();suiLobby();});
+  window.addEventListener('loopsui',()=>{suiUI();suiLobby();try{profUI();}catch(e){}});
   $('nsui').onclick=suiOpen;
   $('sui').addEventListener('click',e=>{const b=e.target.closest?e.target.closest('[data-s]'):null;if(!b||b.disabled)return;const L=LSUI();if(!L)return;const k=b.dataset.s;
     if(k==='google'){L.signIn();}else if(k==='guest'){L.useGuest();suiSay('Guest wallet ready. It lives in this browser only.');}
