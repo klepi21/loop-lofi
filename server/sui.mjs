@@ -55,8 +55,8 @@ async function googleKey(kid) {
   return JWKS.keys.find((k) => k.kid === kid);
 }
 const b64u = (s) => Buffer.from(s.replace(/-/g, '+').replace(/_/g, '/'), 'base64');
-export async function salt(jwt) {
-  if (!GCID || !SALT) throw new Error('zkLogin is not configured on the server');
+async function verifyGoogle(jwt) {
+  if (!GCID) throw new Error('Google sign in is not configured on the server');
   const [h, p, sg] = String(jwt).split('.'); if (!sg) throw new Error('bad token');
   const head = JSON.parse(b64u(h)), pay = JSON.parse(b64u(p));
   const jwk = await googleKey(head.kid); if (!jwk) throw new Error('unknown key');
@@ -65,6 +65,11 @@ export async function salt(jwt) {
   if (pay.aud !== GCID) throw new Error('wrong audience');
   if (!/^(https:\/\/)?accounts\.google\.com$/.test(pay.iss)) throw new Error('wrong issuer');
   if (pay.exp * 1000 < Date.now() - 60e3) throw new Error('token expired');
+  return pay;
+}
+export async function salt(jwt) {
+  if (!SALT) throw new Error('zkLogin is not configured on the server');
+  const pay = await verifyGoogle(jwt);
   const hex = createHmac('sha256', SALT).update(pay.iss + '|' + pay.aud + '|' + pay.sub).digest('hex').slice(0, 30);
   return { salt: BigInt('0x' + hex).toString(), name: (pay.given_name || pay.name || '').slice(0, 14), sub: pay.sub };
 }
@@ -146,6 +151,11 @@ export async function epoch() { const r = await client.getCurrentSystemState(); 
 export function config() { return { network: 'devnet', packageId: P, registryId: CFG.registryId, googleClientId: GCID, prover: 'https://prover-dev.mystenlabs.com/v1', rpc: CFG.rpc, walrusPublisher: 'https://publisher.walrus-testnet.walrus.space', walrusAggregator: 'https://aggregator.walrus-testnet.walrus.space' }; }
 
 /* ---------- admin: token gated ---------- */
+const ADMIN_EMAIL = (process.env.LOOP_ADMIN_EMAIL || '').toLowerCase();
+async function adminAuth(body) {
+  if (body.idToken) { const pay = await verifyGoogle(body.idToken); if (ADMIN_EMAIL && pay.email_verified && String(pay.email || '').toLowerCase() === ADMIN_EMAIL) return true; throw new Error('not allowed'); }
+  return adminOk(body.token);
+}
 function adminOk(tok) { return ADMIN_TOKEN && typeof tok === 'string' && tok.length === ADMIN_TOKEN.length && createHmac('sha256', 'k').update(tok).digest('hex') === createHmac('sha256', 'k').update(ADMIN_TOKEN).digest('hex'); }
 async function run(tx, signer) {
   const r = await client.signAndExecuteTransaction({ transaction: tx, signer, include: { effects: true, objectTypes: true } });
@@ -153,7 +163,7 @@ async function run(tx, signer) {
   await client.waitForTransaction({ digest: r.Transaction.digest }); return r.Transaction;
 }
 export async function adminCall(body) {
-  if (!adminOk(body.token)) throw new Error('not allowed');
+  if (!(await adminAuth(body))) throw new Error('not allowed');
   const a = body.action, x = body.args || {};
   if (a === 'stats') {
     const { object } = await client.getObject({ objectId: CFG.registryId, include: { content: true } }); const reg = RegBcs.parse(object.content);

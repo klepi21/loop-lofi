@@ -18,7 +18,7 @@ input{font:inherit;color:var(--ice);background:rgba(255,255,255,.08);border:1px 
 .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.row input{width:auto;flex:1}.msg{margin-top:8px;color:#9FE6FF}.msg.err{color:#ff8a7a}
 #login{max-width:420px;margin:12vh auto;text-align:center}#login img{width:240px}
 </style></head><body>
-<div id="login" class="card" style="display:none"><img src="/landing/img/logo.webp" alt="LOOP"><h2 style="margin-top:12px">OWNER ONLY</h2><input id="tok" type="password" placeholder="Admin token" autocomplete="off"><button id="go">OPEN</button><div id="lmsg" class="msg"></div></div>
+<div id="login" class="card" style="display:none"><img src="/landing/img/logo.webp" alt="LOOP"><h2 style="margin-top:12px">OWNER ONLY</h2><button id="gsi">SIGN IN WITH GOOGLE</button><div id="lmsg" class="msg"></div><details style="margin-top:14px;opacity:.7"><summary style="cursor:pointer;font-size:12px">Use the backup token</summary><input id="tok" type="password" placeholder="Admin token" autocomplete="off"><button id="go" class="alt">OPEN</button></details></div>
 <div id="app" style="display:none">
 <header><img src="/landing/img/wordmark.webp" alt="LOOP"><h1>ADMIN</h1><span class="sp"></span><button class="alt" id="ref">REFRESH</button><button class="alt" id="out">LOCK</button></header>
 <main>
@@ -34,16 +34,17 @@ input{font:inherit;color:var(--ice);background:rgba(255,255,255,.08);border:1px 
 </main></div>
 <script>
 const API='https://43-165-5-114.sslip.io/loop';const $=id=>document.getElementById(id);
-let TOK='';try{TOK=localStorage.getItem('loop_admin')||'';}catch(e){}
+let TOK='',IDT='';try{TOK=localStorage.getItem('loop_admin')||'';IDT=sessionStorage.getItem('loop_admin_id')||'';}catch(e){}
+{const h=new URLSearchParams(location.hash.slice(1));if(h.get('id_token')&&h.get('state')==='loopadmin'){IDT=h.get('id_token');try{sessionStorage.setItem('loop_admin_id',IDT);}catch(e){}history.replaceState(null,'',location.pathname);}}
 const esc=v=>String(v==null?'':v).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const short=a=>a?a.slice(0,8)+'...'+a.slice(-6):'';const sui=m=>(Number(m)/1e9).toFixed(3);
 const scan=(a,obj)=>'https://suiscan.xyz/devnet/'+(obj?'object/':'account/')+a;const tx=d=>'https://suiscan.xyz/devnet/tx/'+d;
-async function admin(action,args){const r=await fetch(API+'/sui/admin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:TOK,action,args})});const d=await r.json();if(d.err)throw new Error(d.err);return d;}
+async function admin(action,args){const r=await fetch(API+'/sui/admin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(IDT?{idToken:IDT,action,args}:{token:TOK,action,args})});const d=await r.json();if(d.err){if(IDT&&/expired|not allowed/.test(d.err)){IDT='';try{sessionStorage.removeItem('loop_admin_id');}catch(e){}}throw new Error(d.err);}return d;}
 async function load(){
   let st=null,mt=null,ch=null;
   try{st=await fetch(API+'/status',{cache:'no-store'}).then(r=>r.json());}catch(e){}
   try{mt=await fetch(API+'/metrics',{cache:'no-store'}).then(r=>r.json());}catch(e){}
-  try{ch=await admin('stats');}catch(e){if(/not allowed/.test(e.message)){lock('Wrong token');return;}}
+  try{ch=await admin('stats');}catch(e){if(/not allowed|expired|bad token/.test(e.message)){lock(/expired/.test(e.message)?'Session ended, sign in again':'This account is not the LOOP owner');return;}}
   $('login').style.display='none';$('app').style.display='block';
   const today=mt&&mt.days?mt.days[new Date().toISOString().slice(0,10)]||{}:{};
   $('now').innerHTML=[['Players online',st?st.players:'?'],['Rooms',st?st.rooms.length:'?'],['Matches today',today.matches||0],['Yeti NFTs minted',ch?ch.minted:'?'],['Results waiting',ch?ch.pending:'?'],['Sponsor wallet',ch?sui(ch.gameBalance)+' SUI':'?']].map(([k,v])=>'<div><b>'+esc(v)+'</b><span>'+k+'</span></div>').join('');
@@ -57,10 +58,12 @@ async function load(){
 function lock(m){$('app').style.display='none';$('login').style.display='block';$('lmsg').textContent=m||'';}
 $('go').onclick=()=>{TOK=$('tok').value.trim();try{localStorage.setItem('loop_admin',TOK);}catch(e){}load();};
 $('tok').onkeydown=e=>{if(e.key==='Enter')$('go').click();};
-$('out').onclick=()=>{TOK='';try{localStorage.removeItem('loop_admin');}catch(e){}lock('');};$('ref').onclick=load;
+$('out').onclick=()=>{TOK='';IDT='';try{localStorage.removeItem('loop_admin');sessionStorage.removeItem('loop_admin_id');}catch(e){}lock('');};
+$('gsi').onclick=async()=>{try{const c=await fetch(API+'/sui/config').then(r=>r.json());if(!c.googleClientId){lock('Google sign in is not set up yet');return;}const n=[...crypto.getRandomValues(new Uint8Array(12))].map(x=>x.toString(16).padStart(2,'0')).join('');
+  location.href='https://accounts.google.com/o/oauth2/v2/auth?'+new URLSearchParams({client_id:c.googleClientId,redirect_uri:location.origin+'/admin/',response_type:'id_token',scope:'openid email',nonce:n,state:'loopadmin',prompt:'select_account'});}catch(e){lock('Could not reach the server');}};$('ref').onclick=load;
 const say=(m,err)=>{$('tmsg').textContent=m;$('tmsg').className='msg'+(err?' err':'');};
 $('tc').onclick=async()=>{const b=$('tc');b.disabled=true;say('Creating on Sui...');try{const d=+$('td').value||7;await admin('create',{name:$('tn').value||'Weekly Cup',starts:Date.now(),ends:Date.now()+d*86400e3});say('Tournament created.');load();}catch(e){say(e.message,true);}b.disabled=false;};
 document.addEventListener('click',async e=>{const f=e.target.dataset&&e.target.dataset.f,p=e.target.dataset&&e.target.dataset.p;if(!f&&!p)return;e.target.disabled=true;
   try{if(f){say('Funding...');await admin('fund',{tour:f,sui:+$('f_'+f).value});say('Funded from the sponsor wallet.');}else{say('Paying out...');const r=await admin('payout',{tour:p});say('Paid: '+r.winners.map(w=>short(w.addr)+' '+sui(w.mist)+' SUI').join(', '));}load();}catch(err){say(err.message,true);e.target.disabled=false;}});
-if(TOK)load();else lock('');setInterval(()=>{if(TOK&&$('app').style.display==='block')load();},30000);
+if(TOK||IDT)load();else lock('');setInterval(()=>{if((TOK||IDT)&&$('app').style.display==='block')load();},30000);
 </script></body></html>
