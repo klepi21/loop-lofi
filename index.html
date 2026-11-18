@@ -481,6 +481,7 @@ html.mob #mob{display:flex}html.mob #root,html.mob #intro{display:none!important
 #sui .srow .sbtn{margin:0 0 0 auto;font-size:11px;padding:6px 10px}#sui a{color:#7FE9FF}
 #sui .smsg{font-family:ui-rounded,system-ui,sans-serif;font-weight:700;font-size:13px;letter-spacing:0;margin-top:8px;color:#9FE6FF}#sui .smsg.err{color:#ff8a7a}
 #lbchain,#clsui{pointer-events:auto;cursor:pointer;font-family:"PG",sans-serif;font-size:13px;letter-spacing:1.5px;color:#0B1F44;border:0;border-radius:16px;background:linear-gradient(#7FE9FF,#2A9BFF);padding:7px 14px;margin:0 0 8px;display:none}
+.lk.nft{border-color:#00D1FF!important;box-shadow:0 0 0 1px rgba(0,209,255,.35),0 0 14px rgba(0,209,255,.25)}.lk.nft small{color:#7FE9FF}
 </style>
 </head>
 <body>
@@ -1743,13 +1744,13 @@ const showc=ROSTER.map(L=>setLook(mk('',L.col,L.col2,1),L));
 function assignLooks(k){setLook(player,ROSTER[k]);let j=1;for(let i=0;i<8;i++)if(i!==k)setLook(chickens[j++],ROSTER[i]);}
 assignLooks(0);
 /* ---------- cosmetics that unlock by level: [name, level, colour] ---------- */
-const HATS=[['Bare head',1],['Wool beanie',1],['Sherpa hat',1],['Snapback',1],['Sunglasses',1],['Ski goggles',1],['Bobble hat',1],['Viking helmet',10],['Top hat',12],['Party cone',14],['Crown',16],['Halo',20]];
-const FITS=[['Fur only',1],['LOOP tee',1],['Red scarf',1],['Gold medal',7],['Sui hoodie',1],['Expedition puffer',1],['Tuxedo',13],['Royal cloak',18]];
-const EGGK=[['Classic ice bomb',1,[.7,.88,1]],['Fire red',3,[.86,.1,.1]],['Sky blue',6,[.3,.62,1]],['Black bomb',10,[.1,.1,.13]],['Golden bomb',15,[1,.76,.14]],['Disco bomb',19,null]];
+const HATS=[['Bare head',1],['Wool beanie',1],['Sherpa hat',1],['Snapback',1],['Sunglasses',1],['Ski goggles',1],['Bobble hat',1],['Viking helmet',10],['Top hat',12],['Party cone',14],['Crown',16],['Halo',20],['Sui beanie',1,null,1],['Ice crown',1,null,1],['Climbing helmet',1,null,1],['Monk hat',1,null,2],['Frozen horns',1,null,3]];
+const FITS=[['Fur only',1],['LOOP tee',1],['Red scarf',1],['Gold medal',7],['Sui hoodie',1],['Expedition puffer',1],['Tuxedo',13],['Royal cloak',18],['Sui jersey',1,null,1],['Prayer flag scarf',1,null,1],['Climbing harness',1,null,1],['Monk robe',1,null,2],['Glacier armor',1,null,3]];
+const EGGK=[['Classic ice bomb',1,[.7,.88,1]],['Fire red',3,[.86,.1,.1]],['Sky blue',6,[.3,.62,1]],['Black bomb',10,[.1,.1,.13]],['Golden bomb',15,[1,.76,.14]],['Disco bomb',19,null],['Sui blue',1,[.15,.45,1],1],['Glacier mint',1,[.5,1,.85],1],['Lava core',1,[1,.35,.1],1],['Midnight',1,[.16,.12,.42],2],['Lofi gold',1,[1,.84,.32],3]];
 const PANK=[['Cast iron',1,[.07,.07,.08]],['Copper',5,[.62,.3,.14]],['Blue enamel',9,[.1,.26,.6]],['Hot pink',12,[.85,.25,.5]],['Solid gold',17,[.95,.68,.1]]];
 const COSL=[HATS,FITS,EGGK,PANK],COSK=['h','o','e','p'],COSN=['HATS','OUTFITS','BOMBS','AVALANCHES'];
-function cosPack(o){return (o.h&31)|(o.o&15)<<5|(o.e&7)<<9|(o.p&7)<<12;}
-function setCos(c,v){v|=0;const h=v&31,o=v>>5&15,e=v>>9&7,q=v>>12&7;c.hat=h<HATS.length?h:0;c.fit=o<FITS.length?o:0;c.egg=e<EGGK.length?e:0;c.pan=q<PANK.length?q:0;return c;}
+function cosPack(o){return (o.h&31)|(o.o&15)<<5|(o.e&15)<<9|(o.p&7)<<13;}
+function setCos(c,v){v|=0;const h=v&31,o=v>>5&15,e=v>>9&15,q=v>>13&7;c.hat=h<HATS.length?h:0;c.fit=o<FITS.length?o:0;c.egg=e<EGGK.length?e:0;c.pan=q<PANK.length?q:0;return c;}
 function botCos(){return Math.random()<.45?cosPack({h:1+Math.floor(Math.random()*5),o:Math.random()<.35?1+Math.floor(Math.random()*2):0,e:0,p:0}):0;}
 function eggCol(i,t){const k=EGGK[i|0]||EGGK[0];if(k[2])return k[2];const a=t*5;return [.6+.4*Math.sin(a),.6+.4*Math.sin(a+2.1),.6+.4*Math.sin(a+4.2)];}
 /* ---------- game modes: f free for all, d 1 v 1, t teams, c capture the egg ---------- */
@@ -2308,7 +2309,11 @@ function saveProfile(){try{localStorage.setItem('loop_profile',JSON.stringify(pr
 /* ---------- level, unlocks, weekly score, daily and weekly challenges ---------- */
 const lvlOf=xp=>Math.floor(Math.sqrt(xp/300))+1,lvlXp=l=>300*(l-1)*(l-1);
 const dayId=()=>Math.floor(Date.now()/86400000),weekId=()=>Math.floor((Date.now()/86400000+3)/7);
-function myCos(){const o=profile.x.cos,lv=lvlOf(profile.xp),q={};COSK.forEach((k,i)=>{const it=COSL[i][o[k]];q[k]=it&&it[1]<=lv?o[k]:0;});return cosPack(q);}
+// what your Yeti NFTs unlock: 0 no NFT, otherwise the level of your best Yeti NFT
+function nftLv(){const L=(typeof window!=='undefined'&&window.LOOPSUI)||null,d=L&&L.st&&L.st.data;if(!d||!d.yetis||!d.yetis.length)return 0;let m=1;for(const y of d.yetis)m=Math.max(m,y.level|0);return m;}
+function cosOk(it,lv){return !!it&&it[1]<=lv&&(!it[3]||nftLv()>=it[3]);}
+function cosWhy(it){return it[3]?(nftLv()?'NFT LEVEL '+it[3]:'MINT A YETI NFT'):'LEVEL '+it[1];}
+function myCos(){const o=profile.x.cos,lv=lvlOf(profile.xp),q={};COSK.forEach((k,i)=>{const it=COSL[i][o[k]];q[k]=cosOk(it,lv)?o[k]:0;});return cosPack(q);}
 function wkFix(){const w=profile.x.wk,id=weekId();if(w.id!==id){w.id=id;w.k=w.w=w.s=w.m=0;}return w;}
 // [what counts, how many, XP, words]
 const CHD=[['k',10,150,'Bonk 10 yetis'],['k',18,220,'Bonk 18 yetis'],['hs',4,180,'Land 4 headshots'],['eg',2,180,'Freeze 2 yetis with ice bombs'],['m',3,150,'Play 3 online matches'],['w',1,250,'Win a match'],['t3',2,180,'Finish in the top 3 twice'],['dn',1,200,'Release a snow leopard'],['as',2,150,'Get 2 assists'],['tm',1,150,'Play a team match']];
@@ -2816,11 +2821,11 @@ function markTick(){const a=$('mk0'),b=$('mk1');if(MODE!=='c'||state!=='play'||r
   if(a.style.display==='block'&&b.style.display==='block'&&Math.abs(a._x-b._x)<94&&Math.abs(a._y-b._y)<28){b._y=a._y+(b._y>=a._y?29:-29);b.style.transform='translate('+b._x+'px,'+b._y+'px)';}}
 /* ---------- locker ---------- */
 function unSeen(){if(SRV)return;const lv=lvlOf(profile.xp),X=profile.x;if(!X.seen)X.seen=1;const n=unlocksAt(X.seen,lv).length,e=$('nlocn');e.textContent=n?'NEW':'';e.classList.toggle('on',n>0);}
-function lockShow(){lkPrev=null;{const lv=lvlOf(profile.xp),o=profile.x.cos;COSK.forEach((k,i)=>{const it=COSL[i][o[k]];if(!it||it[1]>lv)o[k]=0;});}lockUI();pgOpen('lock');if(profile.x.seen<lvlOf(profile.xp)){profile.x.seen=lvlOf(profile.xp);saveProfile();}unSeen();}
+function lockShow(){lkPrev=null;{const lv=lvlOf(profile.xp),o=profile.x.cos;COSK.forEach((k,i)=>{const it=COSL[i][o[k]];if(!cosOk(it,lv))o[k]=0;});}lockUI();pgOpen('lock');if(profile.x.seen<lvlOf(profile.xp)){profile.x.seen=lvlOf(profile.xp);saveProfile();}unSeen();}
 function lockUI(){const lv=lvlOf(profile.xp),L=COSL[lkTab],k=COSK[lkTab],cur=profile.x.cos[k];if(!lkPrev||lkPrev.k!==lkTab)lkPrev={k:lkTab,i:cur};
   document.querySelectorAll('#lktabs button').forEach(b=>b.classList.toggle('sel',+b.dataset.t===lkTab));
-  $('lkgrid').innerHTML=L.map((it,i)=>{const lock=it[1]>lv,on=i===cur,c=it[2];return '<button class="lk'+(on?' on':'')+(lock?' lock':'')+(i===lkPrev.i?' pv':'')+'" data-i="'+i+'">'+(lkTab>1?'<u style="background:'+(c?'rgb('+c.map(v=>Math.round(Math.min(1,v*(lkTab===3?2.2:1)+(lkTab===3?.08:0))*255)).join(',')+')':'conic-gradient(#f55,#fd5,#5d8,#5af,#d6f,#f55)')+'"></u>':'')+'<b>'+it[0].toUpperCase()+'</b><small>'+(on?'IN USE':lock?'LEVEL '+it[1]:'TAP TO USE')+'</small></button>';}).join('');
-  const it=L[lkPrev.i];$('lknote').textContent=it[1]>lv?'You are trying the '+it[0]+'. It unlocks at level '+it[1]+', you are level '+lv+'. Play online to level up.':lkTab<2?'Everyone in the match sees what your yeti wears. Use the arrows under the yetis to change your yeti.':lkTab===2?'This is how your ice bombs look to everyone.':'This is the avalanche that falls from the sky when you reach a streak of 7.';}
+  $('lkgrid').innerHTML=L.map((it,i)=>{const lock=!cosOk(it,lv),on=i===cur,c=it[2];return '<button class="lk'+(it[3]?' nft':'')+(on?' on':'')+(lock?' lock':'')+(i===lkPrev.i?' pv':'')+'" data-i="'+i+'">'+(lkTab>1?'<u style="background:'+(c?'rgb('+c.map(v=>Math.round(Math.min(1,v*(lkTab===3?2.2:1)+(lkTab===3?.08:0))*255)).join(',')+')':'conic-gradient(#f55,#fd5,#5d8,#5af,#d6f,#f55)')+'"></u>':'')+'<b>'+it[0].toUpperCase()+'</b><small>'+(on?'IN USE':lock?cosWhy(it):it[3]?'NFT ITEM':'TAP TO USE')+'</small></button>';}).join('');
+  const it=L[lkPrev.i];$('lknote').textContent=!cosOk(it,lv)?(it[3]?(nftLv()?'You are trying the '+it[0]+'. It unlocks when your Yeti NFT reaches level '+it[3]+'. Save your online matches to your NFT to level it up.':'You are trying the '+it[0]+'. Mint a free Yeti NFT on the SUI WALLET page to unlock it.'):'You are trying the '+it[0]+'. It unlocks at level '+it[1]+', you are level '+lv+'. Play online to level up.'):lkTab<2?'Everyone in the match sees what your yeti wears. Use the arrows under the yetis to change your yeti.':lkTab===2?'This is how your ice bombs look to everyone.':'This is the avalanche that falls from the sky when you reach a streak of 7.';}
 /* ---------- challenges page ---------- */
 function chUI(){if(SRV)return;const C=chNow(),q=profile.x.cq;let done=0;
   const card=(D,v)=>{const ok=v>=D[1];if(ok)done++;return '<div class="chc'+(ok?' ok':'')+'"><b>'+D[3]+'</b><i>+'+D[2]+' XP</i><div class="chb"><u style="width:'+Math.round(Math.min(1,v/D[1])*100)+'%"></u></div><small>'+(ok?'DONE':v+' OF '+D[1])+'</small></div>';};
@@ -3029,7 +3034,7 @@ if(!SRV){
   document.querySelectorAll('[data-x]').forEach(b=>{b.onclick=()=>pgClose(b.dataset.x);});
   document.querySelectorAll('#mgrid .mc').forEach(b=>{b.onclick=()=>{modeSet(b.dataset.m);pgClose('modes');};});
   document.querySelectorAll('#lktabs button').forEach(b=>{b.onclick=()=>{lkTab=+b.dataset.t;lkPrev=null;lockUI();};});
-  $('lkgrid').addEventListener('click',e=>{const b=e.target&&e.target.closest?e.target.closest('button[data-i]'):null;if(!b)return;const i=+b.dataset.i,L=COSL[lkTab];lkPrev={k:lkTab,i};if(L[i][1]<=lvlOf(profile.xp)){profile.x.cos[COSK[lkTab]]=i;saveProfile();}lockUI();initAudio();showc[sel].beak=1;sCluck(showc[sel],0);});
+  $('lkgrid').addEventListener('click',e=>{const b=e.target&&e.target.closest?e.target.closest('button[data-i]'):null;if(!b)return;const i=+b.dataset.i,L=COSL[lkTab];lkPrev={k:lkTab,i};if(cosOk(L[i],lvlOf(profile.xp))){profile.x.cos[COSK[lkTab]]=i;saveProfile();}lockUI();initAudio();showc[sel].beak=1;sCluck(showc[sel],0);});
   document.querySelectorAll('#lbper button').forEach(b=>{b.onclick=()=>{lbPer=b.dataset.v;lbLoad();};});document.querySelectorAll('#lbwho button').forEach(b=>{b.onclick=()=>{lbWho=b.dataset.v;lbLoad();};});
   $('nloc').onclick=lockShow;$('cinfo').onclick=()=>{if(!lkOpen)lockShow();};$('nchl').onclick=()=>{chUI();pgOpen('chl');};$('nlb').onclick=()=>{pgOpen('lbd');if(sess&&sess.has)pushProfile(true);setTimeout(lbLoad,sess&&sess.has?450:0);};
   const frOpen=()=>{pgOpen('frd');$('frmsg').textContent=sess&&sess.has?"Type 2 letters or more of your friend's name.":'Sign in to add friends.';$('frres').innerHTML='';$('frin').value='';frQ='';frUI();frLoad();socPoll();};
@@ -3192,7 +3197,7 @@ function drawChicken(c,t){
   else if(hat&&hat!==4&&hat!==11){child(CHH,CH,0,.09,-.03,0,0,0);CHS.set(CH);CH.set(CHH);drawHat(hat,f);CH.set(CHS);}
   else if(ac===3&&!hat){inst(CYL,CH,0,.3,-.02,0,0,0,.115,.06,.115,1,.8,.2,.2);for(let k=0;k<5;k++){const a=k/5*TAU;inst(CONE,CH,Math.sin(a)*.1,.35,Math.cos(a)*.1-.02,0,0,0,.03,.08,.03,1,.8,.2,.2);}inst(SPH,CH,0,.33,.09,0,0,0,.024,.024,.024,.9,.15,.2,.3);}
   else if(ac===4&&!hat){inst(SPH,CH,0,.24,-.03,-.1,0,0,.2,.13,.2,.85,.2,.18,f);inst(CYL,CH,0,.2,-.03,-.1,0,0,.205,.04,.205,.95,.95,.95,f);inst(SPH,CH,0,.38,-.05,0,0,0,.06,.06,.06,.95,.95,.95,f);}
-  if(!shell&&hat!==7&&hat!==8){for(let k=0;k<7;k++){const a=-PI/2+k/6*PI;inst(SPH,CH,Math.sin(a)*.235,.12+Math.cos(a)*.2,-.03,0,0,-a,.035,.05,.045,.07,.08,.12,f);}for(let sx=-1;sx<=1;sx+=2){inst(SPH,CH,sx*.225,.09,-.01,0,0,0,.065,.1,.09,.06,.07,.1,f);inst(SPH,CH,sx*.27,.09,-.01,0,0,0,.02,.075,.065,.08,.09,.14,f);inst(SPH,CH,sx*.292,.07,-.01,0,0,0,.006,.026,.022,.3,1.4,2,.9);inst(SPH,CH,sx*.292,.105,-.01,0,0,0,.006,.014,.012,.3,1.4,2,.9);}}
+  if(!shell&&hat!==7&&hat!==8&&hat!==14&&hat!==15){for(let k=0;k<7;k++){const a=-PI/2+k/6*PI;inst(SPH,CH,Math.sin(a)*.235,.12+Math.cos(a)*.2,-.03,0,0,-a,.035,.05,.045,.07,.08,.12,f);}for(let sx=-1;sx<=1;sx+=2){inst(SPH,CH,sx*.225,.09,-.01,0,0,0,.065,.1,.09,.06,.07,.1,f);inst(SPH,CH,sx*.27,.09,-.01,0,0,0,.02,.075,.065,.08,.09,.14,f);inst(SPH,CH,sx*.292,.07,-.01,0,0,0,.006,.026,.022,.3,1.4,2,.9);inst(SPH,CH,sx*.292,.105,-.01,0,0,0,.006,.014,.012,.3,1.4,2,.9);}}
   else if(ac===7&&!hat){inst(SPH,CH,0,.3,-.02,0,0,0,.17,.12,.17,r,g,b,f);for(let k=0;k<6;k++){const a=k/6*TAU;inst(CONE,CH,Math.sin(a)*.12,.36,Math.cos(a)*.12-.02,Math.cos(a)*.6,0,-Math.sin(a)*.6,.04,.12,.04,r,g,b,f);}}
   if(ac===6&&!hat){inst(CYL,CH,0,.2,.0,-.2,0,0,.205,.035,.205,.25,.2,.18,f);for(let sx=-1;sx<=1;sx+=2)inst(SPH,CH,sx*.07,.215,.17,-.4,0,0,.055,.045,.03,1,.6,.15,.35);}
   if(hat===11&&!shell)for(let k=0;k<12;k++){const a=k/12*TAU;inst(SPH,CH,Math.sin(a)*.15,.52+Math.sin(t*2)*.01,Math.cos(a)*.15,0,0,0,.04,.022,.04,1,.88,.35,.9);}
@@ -3230,6 +3235,11 @@ function drawHat(h,f){const I=(m,x,y,z,rx,ry,rz,sx,sy,sz,r,g,b,gl)=>inst(m,CH,x,
   else if(h===7){I(SPH,0,.16,0,0,0,0,.24,.18,.245,.62,.64,.7);I(CYL,0,.13,0,0,0,0,.245,.04,.25,.75,.6,.2);for(let sx=-1;sx<=1;sx+=2){I(CONE,sx*.22,.2,0,0,0,-sx*.9,.06,.26,.06,.95,.92,.82);}}
   else if(h===8){I(CYL,0,.12,0,0,0,0,.28,.02,.28,.06,.06,.08);I(CYL,0,.13,0,0,0,0,.16,.3,.16,.06,.06,.08);I(CYL,0,.15,0,0,0,0,.163,.05,.163,.0,.6,1,.2);}
   else if(h===9){I(CONE,0,.18,0,0,0,0,.14,.38,.14,.16,.45,1);I(CYL,0,.18,0,0,0,0,.145,.03,.145,0,.82,1,.3);I(SPH,0,.57,0,0,0,0,.05,.05,.05,1,1,1,.4);}
+  else if(h===12){I(SPH,0,.17,0,-.08,0,0,.235,.17,.235,.12,.36,.95);I(CYL,0,.13,0,-.08,0,0,.24,.06,.24,.08,.22,.65);I(SPH,0,.2,.215,-.25,0,0,.05,.07,.02,0,.9,1.2,.9);I(CONE,0,.25,.205,-.25,0,0,.035,.05,.015,0,.9,1.2,.9);I(SPH,0,.34,-.02,0,0,0,.06,.06,.06,1,1,1);}
+  else if(h===13){I(CYL,0,.17,0,0,0,0,.2,.05,.2,.55,.85,1.2,.5);for(let k=0;k<7;k++){const a=k/7*TAU;I(CONE,Math.sin(a)*.17,.2,Math.cos(a)*.17,Math.cos(a)*.2,0,-Math.sin(a)*.2,.045,.14+(k%2)*.06,.045,.6,.95,1.4,.7);}}
+  else if(h===14){I(SPH,0,.15,0,-.06,0,0,.245,.16,.245,1,.45,.08);I(CYL,0,.11,0,-.06,0,0,.25,.025,.25,.25,.25,.28);I(SPH,0,.2,.22,0,0,0,.05,.04,.03,1.6,1.6,1.4,.9);I(CYL,0,.2,.18,PI/2,0,0,.055,.05,.055,.15,.15,.18);}
+  else if(h===15){I(CYL,0,.13,0,-.05,0,0,.22,.06,.22,.5,.12,.1);for(let k=0;k<9;k++){const a=(k/8-.5)*2.4;I(SPH,0,.2+Math.cos(a)*.14,Math.sin(a)*.18,a,0,0,.05,.07,.05,1,.78,.15);}I(SPH,0,.2,0,0,0,0,.08,.08,.18,1,.72,.12);}
+  else if(h===16){for(let sx=-1;sx<=1;sx+=2){I(CONE,sx*.17,.16,0,0,0,-sx*.55,.07,.26,.07,.6,.9,1.3,.6);I(CONE,sx*.29,.36,0,0,0,-sx*1.3,.045,.16,.045,.7,.95,1.4,.7);}}
   else if(h===10){I(CYL,0,.18,0,0,0,0,.15,.07,.15,1,.8,.2,.2);for(let k=0;k<5;k++){const a=k/5*TAU;I(CONE,Math.sin(a)*.13,.24,Math.cos(a)*.13,0,0,0,.035,.1,.035,1,.8,.2,.2);}I(SPH,0,.22,.15,0,0,0,.03,.03,.03,0,.82,1,.4);}}
 function drawFit(c,o,f,run,ph){const I=(m,x,y,z,rx,ry,rz,sx,sy,sz,r,g,b,gl)=>inst(m,CB,x,y,z,rx,ry,rz,sx,sy,sz,r,g,b,gl===undefined?f:gl),sw=Math.sin(ph*2)*.12*run,tm=c.team>=0; // yeti outfits
   if(o===1){I(SPH,0,.6,-.01,0,0,0,.375,.26,.325,.16,.42,1);I(SPH,0,.62,.29,0,0,0,.1,.08,.03,.9,.97,1,.2);I(SPH,0,.63,.31,0,0,0,.05,.05,.02,0,.75,1,.4);for(const sx of [-1,1])I(SPH,sx*.33,.69,0,0,0,sx*.3,.13,.1,.13,.16,.42,1);}
@@ -3238,6 +3248,11 @@ function drawFit(c,o,f,run,ph){const I=(m,x,y,z,rx,ry,rz,sx,sy,sz,r,g,b,gl)=>ins
   else if(o===4){I(SPH,0,.59,-.01,0,0,0,.38,.3,.33,0,.62,.85);I(SPH,0,.86,-.2,-.4,0,0,.25,.17,.16,0,.55,.78);I(SPH,0,.52,.27,0,0,0,.2,.08,.08,0,.5,.72);I(SPH,0,.66,.31,0,0,0,.08,.1,.02,.95,.98,1,.3);for(const sx of [-1,1])I(SPH,sx*.33,.66,0,0,0,sx*.3,.14,.18,.14,0,.62,.85);}
   else if(o===5){I(SPH,0,.6,-.01,0,0,0,.39,.31,.34,1,.45,.08);for(let k=0;k<3;k++)I(CYL,0,.5+k*.1,-.01,0,0,0,.39-Math.abs(k-1)*.02,.015,.34,.75,.3,.05);I(CYL,0,.6,.33,PI/2,0,0,.012,.24,.012,.2,.2,.22);}
   else if(o===6){I(SPH,0,.59,-.02,0,0,0,.375,.3,.33,.07,.07,.09);I(SPH,0,.6,.24,0,0,0,.15,.22,.1,1,1,1);for(let sx=-1;sx<=1;sx+=2)I(CONE,sx*.06,.76,.33,0,0,sx*PI/2,.045,.08,.03,.07,.07,.09);for(let i=0;i<2;i++)I(SPH,0,.58-i*.09,.335,0,0,0,.016,.016,.016,.07,.07,.09);}
+  else if(o===8){I(SPH,0,.6,-.01,0,0,0,.375,.26,.325,.12,.38,.95);I(SPH,0,.6,.3,0,0,0,.09,.1,.03,.95,.98,1,.2);I(CONE,0,.69,.3,-.1,0,0,.06,.1,.02,.95,.98,1,.2);for(const sx of [-1,1])I(SPH,sx*.33,.69,0,0,0,sx*.3,.13,.1,.13,.12,.38,.95);}
+  else if(o===9){if(!tm)I(CYL,0,.82,.06,-.15,0,0,.24,.07,.21,.9,.9,.9);for(let k=0;k<5;k++){const C=FLAGC[k];I(SPH,-.14+k*.07,.7-Math.abs(k-2)*.02,.27,.2,0,0,.035,.07,.015,C[0],C[1],C[2]);}}
+  else if(o===10){for(const sx of [-1,1])I(CYL,sx*.12,.62,.28,0,0,sx*.35,.025,.34,.02,.95,.3,.1);I(CYL,0,.42,0,0,0,0,.33,.06,.29,.95,.3,.1);for(const sx of [-1,.6])I(SPH,sx*.2,.4,.27,0,0,0,.035,.05,.02,1,.8,.25,.3);I(CYL,-.3,.75,-.05,PI/2-.4,0,.6,.13,.03,.13,.9,.75,.4);}
+  else if(o===11){I(SPH,0,.55,-.02,0,0,0,.385,.34,.335,.48,.12,.1);I(SPH,0,.32,0,0,0,0,.36,.12,.32,.48,.12,.1);I(CYL,0,.62,.05,0,0,.7,.04,.6,.04,1,.72,.12);}
+  else if(o===12){I(SPH,0,.62,.12,-.1,0,0,.3,.22,.2,.55,.85,1.15,.45);for(const sx of [-1,1]){I(SPH,sx*.33,.74,0,0,0,sx*.4,.15,.08,.15,.6,.9,1.2,.45);I(CONE,sx*.36,.8,0,0,0,-sx*.6,.04,.12,.04,.7,.95,1.4,.6);}I(CYL,0,.42,0,0,0,0,.33,.05,.29,.45,.7,1,.3);}
   else if(o===7){I(SPH,0,.6,-.12,-.12,0,0,.37,.28,.38,.42,.12,.6);I(SPH,0,.55,-.42,-.45+sw+run*.3,0,0,.3,.03,.22,.36,.1,.52);if(!tm)for(let i=0;i<10;i++){const a=i/10*TAU;I(SPH,Math.sin(a)*.24,.83-Math.cos(a)*.04,.05+Math.cos(a)*.2,0,0,0,.06,.05,.06,1,1,.97);}I(SPH,0,.72,.3,0,0,0,.035,.035,.02,1,.8,.2,.4);}}
 const WM={x:-40,z:-48,yaw:Math.atan2(40,48)};
 const BFLY=[[8,6,[1,.6,.1]],[-6,-4,[.95,.95,1]],[15,-9,[.4,.6,1]],[-14,12,[1,.85,.2]],[2,-17,[1,.5,.6]],[-20,-8,[.95,.95,1]],[20,10,[1,.6,.1]]];

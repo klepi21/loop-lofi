@@ -148,7 +148,7 @@ wss.on('connection',ws=>{
         if(!ok){no('You can only watch a match a friend is playing');return;}if(r.specs.size>=6){no('Too many people are watching this match');return;}
         spec=r;r.specs.add(ws);mAdd('watch');ws.send(JSON.stringify({e:[r.R.welcome(0),['rc',r.code,r.duel?1:0,r.mode]],u:r.R.snap()}));return;}
       if(spec)return;
-      if(m[0]==='j'){if(room)return;let name=String(m[1]||'Yeti').replace(/[^A-Za-z0-9_ ]/g,'').slice(0,14)||'Yeti';const look=(m[2]|0)&7,ver=m[3]|0,cos=(m[6]|0)&32767;
+      if(m[0]==='j'){if(room)return;let name=String(m[1]||'Yeti').replace(/[^A-Za-z0-9_ ]/g,'').slice(0,14)||'Yeti';const look=(m[2]|0)&7,ver=m[3]|0,cos=(m[6]|0)&65535;
         const code=typeof m[4]==='string'?m[4].toUpperCase().replace(/[^A-Z]/g,'').slice(0,4):'';
         if(code){const r=rooms.find(q=>q.code===code);if(!r||r.clients.size>=r.max){no(r?'That room is full right now':'That room is closed. Ask for a new code');return;}room=r;}
         else room=pickRoom(1,m[5]);
