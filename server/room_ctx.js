@@ -8,7 +8,7 @@ chickens.forEach((c,i)=>{c.slot=i;c.net=false;c.look=(i+7)%8;c.life=0;c.credits=
 let T=0,wasOver=false,overClock=0,nextArena=0,DUEL=false,cands=[],votes={},locked=false;const GAP=30,LATE=40,LOCK=5,IDLEK=21,KICK=[];
 // seats without a real player are played by the computer under a name that reads like a player's, so a room is never empty
 const BN1='Kostas Nikos Giorgos Yannis Dimitris Panos Stavros Thanos Vasilis Manos Petros Tasos Makis Stelios Lefteris Maria Eleni Katerina Sofia Anna Dora Ioanna Alex Chris Mike Leo Max Luca Jack Emma Mia Noah Liam Tom Ben Ivan Omar Kai Sam Nick Jim Tony Marco Pablo Hugo Lena Nina Zoe'.split(' ');
-const BN2='rooster hen egg kota souvlaki gyros feta ninja wolf tiger sniper shadow gamer king boss legend beast hawk fox panda pirate turbo ghost viper rocket pixel noob pro'.split(' ');
+const BN2='yeti frost blizzard avalanche glacier sherpa momo icepick snow leopard ninja wolf sniper shadow gamer king boss legend beast hawk fox panda turbo ghost viper rocket pixel noob pro chill lofi'.split(' ');
 const BN3='Dark Pro Big Lil Mad Fast Lazy Crazy Angry Epic Mega Super Silent Lucky'.split(' ');
 function botName(){const pk=l=>l[Math.floor(Math.random()*l.length)],cap=w=>w[0].toUpperCase()+w.slice(1),num=()=>Math.random()<.5?String(Math.random()<.5?85+Math.floor(Math.random()*15):Math.floor(Math.random()*12)).padStart(2,'0'):String(1+Math.floor(Math.random()*999));
   for(let k=0;k<40;k++){const r=Math.random();let n;
@@ -18,9 +18,9 @@ function botName(){const pk=l=>l[Math.floor(Math.random()*l.length)],cap=w=>w[0]
     else if(r<.75)n=pk(BN2)+num();
     else if(r<.83)n='xX'+pk(BN2)+'Xx';
     else if(r<.93)n=pk(BN1)+'ABDGKLMNPST'[Math.floor(Math.random()*11)];
-    else n=pk(BN1).toLowerCase()+(Math.random()<.5?'_gr':'GR');
+    else n=pk(BN1).toLowerCase()+(Math.random()<.5?'_sui':'SUI');
     if(!/^[A-Za-z0-9_]{3,14}$/.test(n)||nameBad(n))continue;const l=n.toLowerCase();if(chickens.some(c=>String(c.name||'').toLowerCase()===l||String(c.bname||'').toLowerCase()===l))continue;return n;}
-  return 'Chicken'+(100+Math.floor(Math.random()*900));}
+  return 'Yeti'+(100+Math.floor(Math.random()*900));}
 // between matches a few of these seats change name, the way players come and go
 function botNames(all){for(let i=1;i<chickens.length;i++){const c=chickens[i];if(!c.bname||all||(!c.net&&Math.random()<.3))c.bname=botName();}}
 // 1 v 1 rooms: only seats 1 and 2 play, the other six chickens stay switched off
@@ -42,7 +42,7 @@ globalThis.ROOM={
   init(arena,mode){MODE=mode==='d'||mode==='t'||mode==='c'?mode:'f';DUEL=MODE==='d';buildWorld(arena%NAR);for(const c of chickens)c.bcos=botCos();botNames(true);pickCands();startMatch();if(typeof __MATCHT==='number')matchT=__MATCHT;hidePlayer();hideOff();applyRoster();OUT.length=0;},
   restart(){if(state==='play')newMatch(arenaI);},
   // pref: 0 or 1 to sit with party friends on that team, anything else lets the room balance the teams
-  join(name,look,cos,pref,lvl){if(nameBad(name))name='Chicken'+(100+Math.floor(Math.random()*900));const free=[];for(let i=1;i<chickens.length;i++)if(!chickens[i].net&&!chickens[i].off)free.push(i);if(!free.length)return 0;let pool=free;
+  join(name,look,cos,pref,lvl){if(nameBad(name))name='Yeti'+(100+Math.floor(Math.random()*900));const free=[];for(let i=1;i<chickens.length;i++)if(!chickens[i].net&&!chickens[i].off)free.push(i);if(!free.length)return 0;let pool=free;
     if(teamM()){const h=[0,0];for(let i=1;i<chickens.length;i++)if(chickens[i].net)h[i<=4?0:1]++;const t=pref===0||pref===1?pref:h[0]<h[1]?0:h[1]<h[0]?1:Math.floor(Math.random()*2),q=free.filter(i=>(i<=4?0:1)===t);if(q.length)pool=q;}
     const s=pool[Math.floor(Math.random()*pool.length)],c=chickens[s];c.net=true;c.pname=name;c.look=look%8;c.cos=cos|0;setLook(c,ROSTER[c.look]);setCos(c,c.cos);c.name=name;c.kills=0;c.deaths=0;c.streak=0;c.credits=0;c.fire=false;c.wx=c.wz=0;c.route=null;
     c.lvl=lvl>0?Math.min(999,lvl|0):0;roomLvl();c.idleT=0;c.iyaw=1e9;c.ipit=0;c.alive=false;c.deadT=0;c.late=!DUEL&&state==='play'&&matchT<LATE;if(state==='play'&&!c.late)respawn(c);OUT.push(['ro',rosterList()]);return s;},

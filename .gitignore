@@ -7,3 +7,8 @@ tools/dev/node_modules
 __pycache__
 brand/ref
 server/metrics.json
+
+# LOOP Sui secrets and Move build output
+.secrets
+move/build
+move/scripts/node_modules

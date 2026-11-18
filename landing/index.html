@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<script>/* sign in returns and invite links belong to the game, not the landing page */(function(){var s=location.search,h=location.hash;if(/[?&](room|party|srv)=/.test(s)||/[#&](id_token|access_token|error)=/.test(h)){location.replace('/game'+s+h);}})();</script>
+<title>LOOP, Lofi Out Of Patience. Free yeti snowball battle game</title>
+<meta name="description" content="LOOP (Lofi Out Of Patience) is a free yeti snowball battle game for your desktop browser. Eight player arena fights in the Himalayas, three minute matches, teams, capture the crystal and 1 v 1. Built on Sui devnet for the CLAY hackathon.">
+<link rel="canonical" href="https://loop-lofi.vercel.app/">
+<meta name="theme-color" content="#0B1F44">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://loop-lofi.vercel.app/">
+<meta property="og:site_name" content="LOOP">
+<meta property="og:locale" content="en_US">
+<meta property="og:title" content="LOOP, Lofi Out Of Patience. Chill vibes. Cold hits.">
+<meta property="og:description" content="A free yeti snowball battle in the Himalayas. Eight yetis, three minutes, one very calm yeti who is out of patience. Play in your desktop browser.">
+<meta property="og:image" content="https://loop-lofi.vercel.app/landing/img/og.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="LOOP, Lofi Out Of Patience. A yeti with headphones over a snowy arena.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="LOOP, Lofi Out Of Patience. Chill vibes. Cold hits.">
+<meta name="twitter:description" content="A free yeti snowball battle in the Himalayas. Play in your desktop browser.">
+<meta name="twitter:image" content="https://loop-lofi.vercel.app/landing/img/og.jpg">
+<link rel="icon" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/icon-180.png">
+<link rel="preload" href="/landing/LuckiestGuy.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[
+{"@type":"WebSite","@id":"https://loop-lofi.vercel.app/#website","url":"https://loop-lofi.vercel.app/","name":"LOOP","alternateName":["Lofi Out Of Patience","LOOP game"],"inLanguage":"en"},
+{"@type":"VideoGame","@id":"https://loop-lofi.vercel.app/#game","name":"LOOP","alternateName":"Lofi Out Of Patience","url":"https://loop-lofi.vercel.app/","image":"https://loop-lofi.vercel.app/landing/img/og.jpg","description":"A free yeti snowball battle game for the desktop browser, set in the Himalayas. Eight player arena matches of three minutes: free for all, teams 4 v 4, capture the crystal and 1 v 1, with bots filling empty seats and private rooms for friends. Sign in with Google through zkLogin and play with sponsored gas on Sui devnet. Made for the CLAY hackathon by Lofi the Yeti.","genre":["Action","Shooter","Multiplayer","Party game","Casual"],"gamePlatform":["Web browser","PC","Mac"],"operatingSystem":"Any desktop web browser","applicationCategory":"GameApplication","playMode":["MultiPlayer","SinglePlayer"],"numberOfPlayers":{"@type":"QuantitativeValue","minValue":1,"maxValue":8},"inLanguage":"en","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"USD","availability":"https://schema.org/InStock"},"potentialAction":{"@type":"PlayAction","target":"https://loop-lofi.vercel.app/game"}},
+{"@type":"FAQPage","@id":"https://loop-lofi.vercel.app/#faq","mainEntity":[
+{"@type":"Question","name":"Is LOOP free?","acceptedAnswer":{"@type":"Answer","text":"Yes. LOOP is free to play and you never need SUI to play. Gas is sponsored."}},
+{"@type":"Question","name":"Can I play on my phone?","acceptedAnswer":{"@type":"Answer","text":"Not yet. LOOP is built for a desktop browser with keyboard and mouse. Open this page on your computer and press play."}},
+{"@type":"Question","name":"Do I need a crypto wallet?","acceptedAnswer":{"@type":"Answer","text":"No. You sign in with Google and zkLogin gives you a Sui address behind the scenes. No seed phrase, no extension."}},
+{"@type":"Question","name":"Is this on Sui mainnet?","acceptedAnswer":{"@type":"Answer","text":"No. For the CLAY hackathon everything runs on Sui devnet. Yeti NFTs, Clip NFTs and tournament pots are devnet assets with no real money value."}},
+{"@type":"Question","name":"Can I play with my friends?","acceptedAnswer":{"@type":"Answer","text":"Yes. Make a room, share the four letter code and your friends jump straight in. Bots fill any seats that are still empty."}},
+{"@type":"Question","name":"What happens when I bonk someone?","acceptedAnswer":{"@type":"Answer","text":"The server signs the match result and your Yeti NFT records it on chain. Kills, wins and level stay with that yeti, even if you trade it."}}
+]}]}</script>
+<style>
+@font-face{font-family:"Luckiest";src:url(/landing/LuckiestGuy.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}
+:root{--navy:#0B1F44;--navy2:#0f2858;--deep:#071633;--blue:#2A6BFF;--cyan:#00D1FF;--ice:#E6F1FF;--lav:#A9B8FF;--muted:#b9c8ea;--pad:clamp(16px,4vw,32px);--r:24px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--navy);color:var(--ice);font-family:Nunito,ui-rounded,"SF Pro Rounded","Arial Rounded MT Bold",system-ui,sans-serif;font-weight:600;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,.lg{font-family:"Luckiest",ui-rounded,system-ui,sans-serif;font-weight:400;letter-spacing:.04em;line-height:1.05;margin:0}
+a{color:var(--cyan)}
+img{max-width:100%;height:auto;display:block}
+.wrap{max-width:1180px;margin:0 auto;padding:0 var(--pad)}
+#snow{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+main,nav,footer{position:relative;z-index:2}
+
+/* nav */
+nav{position:sticky;top:0;z-index:40;padding:calc(10px + env(safe-area-inset-top)) var(--pad) 0;margin-bottom:-84px;pointer-events:none}
+nav .bar{pointer-events:auto;max-width:1180px;margin:0 auto;height:66px;display:flex;align-items:center;gap:10px;padding:0 10px 0 16px;border-radius:40px;background:rgba(11,31,68,.72);border:1px solid rgba(169,184,255,.22);box-shadow:0 12px 34px rgba(0,8,30,.45),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3)}
+nav .brand img{height:46px;width:auto}
+nav .links{margin-left:auto;display:flex;align-items:center;gap:2px}
+nav .links a.t{font-family:"Luckiest",sans-serif;font-size:14px;letter-spacing:.08em;color:var(--ice);text-decoration:none;padding:10px 13px 7px;border-radius:22px;transition:background .15s,color .15s}
+nav .links a.t:hover{background:rgba(0,209,255,.12);color:var(--cyan)}
+.pbtn{display:inline-flex;align-items:center;gap:8px;font-family:"Luckiest",sans-serif;font-size:16px;letter-spacing:.08em;color:#06183a;text-decoration:none;background:linear-gradient(180deg,#7fe9ff,var(--cyan) 55%,#00a8e0);border-radius:30px;padding:11px 20px 8px;box-shadow:0 4px 0 #0a5ea8,0 0 22px rgba(0,209,255,.35);white-space:nowrap;margin-left:8px;transition:transform .12s,box-shadow .12s}
+.pbtn:hover{transform:translateY(-2px);box-shadow:0 6px 0 #0a5ea8,0 0 30px rgba(0,209,255,.55)}
+
+/* hero */
+header{position:relative;padding:130px 0 70px;overflow:hidden;background:radial-gradient(70% 70% at 78% 30%,rgba(42,107,255,.45),transparent 70%),radial-gradient(60% 60% at 10% 10%,rgba(0,209,255,.18),transparent 70%),linear-gradient(180deg,#0d2a63 0,var(--navy) 100%)}
+header:after{content:"";position:absolute;left:0;right:0;bottom:0;height:120px;background:linear-gradient(transparent,var(--navy));pointer-events:none}
+header .ridge{position:absolute;left:0;right:0;bottom:0;height:200px;opacity:.5;pointer-events:none}
+.hero{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(24px,4vw,56px);align-items:center}
+.hero h1 img{width:min(100%,440px);filter:drop-shadow(0 18px 30px rgba(0,10,40,.55)) drop-shadow(0 0 40px rgba(0,209,255,.18));animation:pop .9s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes pop{0%{transform:scale(.6) translateY(20px);opacity:0}100%{transform:none;opacity:1}}
+.tagline{font-family:"Luckiest",sans-serif;font-size:clamp(30px,3.5vw,48px);letter-spacing:.04em;line-height:1.05;margin:18px 0 10px;color:var(--ice);text-shadow:0 0 28px rgba(0,209,255,.45),0 4px 0 #0a3d8f}
+.tagline span{color:var(--cyan);white-space:nowrap}
+.pitch{font-size:clamp(16px,1.6vw,19px);color:var(--muted);max-width:520px;margin:0 0 26px}
+.cta{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.big{display:inline-flex;align-items:center;justify-content:center;gap:12px;font-family:"Luckiest",sans-serif;letter-spacing:.07em;font-size:clamp(22px,2.4vw,28px);color:#06183a;text-decoration:none;padding:17px 34px 13px;border-radius:44px;background:linear-gradient(180deg,#9af0ff 0,var(--cyan) 50%,#00a2dc 100%);box-shadow:0 7px 0 #0a5ea8,0 18px 40px rgba(0,209,255,.35),inset 0 2px 0 rgba(255,255,255,.6);transition:transform .12s,box-shadow .12s;position:relative}
+.big:hover{transform:translateY(-3px);box-shadow:0 10px 0 #0a5ea8,0 24px 50px rgba(0,209,255,.5),inset 0 2px 0 rgba(255,255,255,.6)}
+.big:active{transform:translateY(5px);box-shadow:0 2px 0 #0a5ea8}
+.big svg{width:20px;height:20px}
+.ghost{display:inline-flex;align-items:center;gap:8px;font-family:"Luckiest",sans-serif;letter-spacing:.07em;font-size:16px;color:var(--ice);text-decoration:none;padding:14px 22px 11px;border-radius:40px;border:1.5px solid rgba(169,184,255,.45);background:rgba(169,184,255,.08);transition:border-color .15s,background .15s}
+.ghost:hover{border-color:var(--cyan);background:rgba(0,209,255,.1)}
+.mnote{display:none;align-items:center;gap:10px;margin-top:16px;font-size:14px;color:var(--ice);background:rgba(0,209,255,.1);border:1px solid rgba(0,209,255,.35);border-radius:16px;padding:10px 14px;max-width:420px}
+.mnote svg{flex:none;width:22px;height:22px}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.pills span{font-size:13px;font-weight:800;letter-spacing:.02em;padding:5px 13px;border-radius:20px;background:rgba(230,241,255,.07);border:1px solid rgba(169,184,255,.25);color:var(--lav)}
+.stage{position:relative}
+.frame{position:relative;border-radius:var(--r);overflow:hidden;border:1px solid rgba(230,241,255,.5);box-shadow:0 0 0 6px rgba(230,241,255,.08),0 30px 70px rgba(0,6,30,.6),0 0 60px rgba(0,209,255,.2);transform:rotate(1.6deg)}
+.frame img{width:100%;aspect-ratio:16/9;object-fit:cover}
+.frame:after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(255,255,255,.18),transparent 40%);pointer-events:none}
+.inset{position:absolute;left:-6%;bottom:-14%;width:46%;border-radius:18px;overflow:hidden;border:1px solid rgba(230,241,255,.6);box-shadow:0 0 0 5px rgba(11,31,68,.9),0 20px 40px rgba(0,6,30,.6);transform:rotate(-4deg)}
+.inset img{aspect-ratio:16/10;object-fit:cover;width:100%}
+.inset b{position:absolute;left:10px;bottom:8px;font-family:"Luckiest",sans-serif;font-weight:400;font-size:13px;letter-spacing:.08em;color:#fff;background:rgba(11,31,68,.75);padding:4px 10px 2px;border-radius:10px}
+
+/* stats strip */
+.stats{position:relative;z-index:3;margin-top:-10px}
+.stats .row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-radius:var(--r);background:rgba(15,40,88,.6);border:1px solid rgba(169,184,255,.2);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.stats .s{padding:20px 16px;text-align:center;border-left:1px solid rgba(169,184,255,.14)}
+.stats .s:first-child{border-left:0}
+.stats b{display:block;font-family:"Luckiest",sans-serif;font-weight:400;font-size:clamp(28px,3.4vw,40px);color:var(--cyan);line-height:1;text-shadow:0 0 22px rgba(0,209,255,.4)}
+.stats span{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--lav)}
+
+/* sections */
+section{padding:clamp(60px,8vw,104px) 0;position:relative}
+.eyebrow{font-family:"Luckiest",sans-serif;font-size:14px;letter-spacing:.24em;color:var(--cyan);margin-bottom:10px}
+h2{font-size:clamp(32px,4.8vw,54px);color:var(--ice);margin-bottom:14px;text-shadow:0 4px 0 rgba(10,40,110,.8)}
+.lead{font-size:clamp(16px,1.7vw,18.5px);color:var(--muted);max-width:640px;margin:0 0 34px}
+.glass{background:linear-gradient(180deg,rgba(230,241,255,.09),rgba(230,241,255,.03));border:1px solid rgba(169,184,255,.2);border-radius:var(--r);box-shadow:inset 0 1px 0 rgba(255,255,255,.07);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.glass h3{font-size:22px;margin-bottom:6px}
+.glass p{margin:0;color:var(--muted);font-size:15px}
+.ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(160deg,rgba(0,209,255,.28),rgba(42,107,255,.2));border:1px solid rgba(0,209,255,.4);margin-bottom:14px;box-shadow:0 0 18px rgba(0,209,255,.2)}
+.ic svg{width:24px;height:24px;stroke:var(--ice);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tag{display:inline-block;font-family:"Luckiest",sans-serif;font-size:12px;letter-spacing:.1em;color:#06183a;background:var(--cyan);border-radius:10px;padding:4px 9px 2px;margin-bottom:10px}
+
+/* modes */
+.modes-wrap{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:22px;align-items:stretch}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.modes .glass{padding:20px}
+.shotcard{position:relative;border-radius:var(--r);overflow:hidden;border:1px solid rgba(169,184,255,.25);min-height:320px;background:#0a1d40}
+.shotcard img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.shotcard .cap{position:absolute;left:0;right:0;bottom:0;padding:60px 22px 20px;background:linear-gradient(transparent,rgba(7,22,51,.94))}
+.shotcard .cap h3{font-size:24px;margin-bottom:4px}.shotcard .cap p{margin:0;color:var(--muted);font-size:15px}
+.extras{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.extras .glass{padding:18px 20px;display:flex;gap:14px;align-items:flex-start}.extras .ic{margin:0;flex:none}
+
+/* arsenal */
+.arsenal{background:radial-gradient(55% 45% at 85% 40%,rgba(42,107,255,.22),transparent 100%),linear-gradient(180deg,var(--navy) 0,var(--deep) 50%,var(--navy) 100%)}
+.weapons{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.wcard{overflow:hidden;display:flex;flex-direction:column}
+.wcard img{width:100%;aspect-ratio:16/8;object-fit:cover;border-bottom:1px solid rgba(169,184,255,.2)}
+.wcard .tx{padding:20px 22px 22px}
+.wcard h3{font-size:26px}
+.streak-h{margin:44px 0 18px;font-size:clamp(24px,3vw,32px)}
+.ladder{display:grid;grid-template-columns:.8fr 1fr 1fr;gap:18px}
+.step{overflow:hidden;position:relative;display:flex;flex-direction:column}
+.step .pic{aspect-ratio:16/9;background:#0a1d40}.step .pic img{width:100%;height:100%;object-fit:cover}
+.step .tx{padding:34px 20px 20px;position:relative}
+.num{position:absolute;left:18px;top:-30px;width:60px;height:60px;border-radius:50%;display:grid;place-items:center;font-family:"Luckiest",sans-serif;font-size:30px;padding-top:4px;color:#06183a;background:radial-gradient(circle at 35% 30%,#fff,#9af0ff 40%,var(--cyan) 75%);border:3px solid var(--navy);box-shadow:0 0 0 2px rgba(0,209,255,.6),0 0 24px rgba(0,209,255,.6)}
+.step small{display:block;font-size:12px;font-weight:900;letter-spacing:.12em;color:var(--cyan);margin-bottom:4px}
+.step h3{font-size:24px;margin-bottom:6px}.step p{margin:0;color:var(--muted);font-size:15px}
+.icepic{display:grid;place-items:center;background:radial-gradient(circle at 50% 55%,rgba(0,209,255,.35),transparent 60%),linear-gradient(160deg,#173c85,#0a1d40)!important}
+.icepic svg{width:34%;height:auto}
+.pickups{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}
+.pickups .glass{padding:18px 20px;display:flex;gap:14px;align-items:center}
+.pickups .ic{margin:0;flex:none;width:52px;height:52px;border-radius:50%}
+.pickups h3{font-size:19px;margin-bottom:2px}.pickups p{font-size:14px}
+.ic.gold{background:radial-gradient(circle at 35% 30%,#fff6c8,#ffcf4a 60%,#d99a12);border-color:#ffe08a;box-shadow:0 0 20px rgba(255,207,74,.45)}.ic.gold svg{stroke:#5a3a00}
+.ic.hot{background:radial-gradient(circle at 35% 30%,#fff1e8,#ffb27a 60%,#e2703a);border-color:#ffd0b0;box-shadow:0 0 20px rgba(255,150,90,.4)}.ic.hot svg{stroke:#5a2200}
+
+/* yetis */
+.crew{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:22px;align-items:start}
+.crew .frame{transform:none}
+.roster{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.yeti{padding:14px 16px;border-radius:18px}
+.yeti h3{font-size:19px;color:var(--ice);margin-bottom:2px;display:flex;align-items:center;gap:8px}
+.yeti h3:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan);flex:none}
+.yeti p{font-size:14px;line-height:1.45}
+.yeti.lofi,.yeti.last{grid-column:1/-1}.yeti.lofi{border-color:rgba(0,209,255,.5);background:linear-gradient(120deg,rgba(0,209,255,.16),rgba(42,107,255,.08))}
+.yeti.lofi h3{font-size:24px}
+.poses{margin-top:22px;border-radius:var(--r);overflow:hidden;border:1px solid rgba(169,184,255,.2)}
+.poses img{width:100%}
+
+/* maps */
+.maps{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.map{position:relative;border-radius:var(--r);overflow:hidden;border:1px solid rgba(169,184,255,.25);background:#0a1d40;transition:transform .25s,border-color .25s,box-shadow .25s}
+.map:hover{transform:translateY(-4px);border-color:rgba(0,209,255,.6);box-shadow:0 18px 40px rgba(0,8,30,.5),0 0 30px rgba(0,209,255,.2)}
+.map img{width:100%;aspect-ratio:2.4/1;object-fit:cover}
+.map .tx{position:absolute;left:0;right:0;bottom:0;padding:46px 20px 16px;background:linear-gradient(transparent,rgba(7,22,51,.92))}
+.map h3{font-size:24px}.map p{margin:2px 0 0;font-size:14px;color:var(--muted)}
+.more{margin-top:18px;text-align:center;font-family:"Luckiest",sans-serif;letter-spacing:.12em;color:var(--lav);font-size:16px}
+.more span{display:inline-block;padding:10px 22px 7px;border:1px dashed rgba(169,184,255,.4);border-radius:30px}
+
+/* sui */
+.sui{background:radial-gradient(70% 80% at 15% 10%,rgba(0,209,255,.18),transparent 70%),radial-gradient(70% 80% at 90% 90%,rgba(42,107,255,.25),transparent 70%),var(--deep);border-top:1px solid rgba(169,184,255,.12);border-bottom:1px solid rgba(169,184,255,.12)}
+.chain{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.chain .glass{padding:22px}
+.chain .glass.wide{grid-column:span 2;display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start}.chain .glass.wide .ic{margin:0}
+.badge{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--cyan);border:1px solid rgba(0,209,255,.45);border-radius:20px;padding:5px 12px;margin-bottom:16px;background:rgba(0,209,255,.08)}
+.badge i{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+.flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:22px;counter-reset:f}
+.flow div{padding:16px 18px;border-radius:18px;background:rgba(7,22,51,.6);border:1px solid rgba(169,184,255,.16);font-size:14.5px;color:var(--muted);position:relative}
+.flow div:before{counter-increment:f;content:counter(f);display:block;font-family:"Luckiest",sans-serif;font-size:22px;color:var(--cyan);margin-bottom:4px}
+.flow b{color:var(--ice)}
+
+/* lore */
+.lore{padding:0}
+.lore .lin{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);align-items:center;gap:clamp(24px,4vw,56px);padding:clamp(60px,8vw,100px) var(--pad)}
+.lore blockquote{margin:0;font-family:"Luckiest",sans-serif;font-size:clamp(26px,3.4vw,42px);line-height:1.15;letter-spacing:.03em;color:var(--ice);text-shadow:0 0 30px rgba(0,209,255,.25)}
+.lore blockquote em{font-style:normal;color:var(--cyan)}
+.lore p{color:var(--muted);font-size:17px;margin:18px 0 0;max-width:520px}
+.lore .frame{transform:rotate(-1.4deg)}
+
+/* faq */
+.faq{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.faq .glass{padding:20px 22px}
+.faq h3{font-size:20px;margin-bottom:6px}
+
+/* final */
+.final{text-align:center;background:radial-gradient(60% 90% at 50% 100%,rgba(0,209,255,.25),transparent 70%)}
+.final img{width:min(280px,56%);margin:0 auto 10px;filter:drop-shadow(0 16px 30px rgba(0,8,30,.55))}
+.final h2{font-size:clamp(34px,5.4vw,62px)}
+.final .cta{justify-content:center;margin-top:24px}
+.final .mnote{margin-left:auto;margin-right:auto}
+
+/* footer */
+footer{padding:36px 0 calc(40px + env(safe-area-inset-bottom));border-top:1px solid rgba(169,184,255,.15);background:var(--deep);font-size:14px;color:var(--muted)}
+footer .grid{display:grid;grid-template-columns:auto 1fr auto;gap:20px 32px;align-items:center}
+footer .fl img{width:64px;height:auto}
+footer p{margin:0 0 4px}
+footer .lnk{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:flex-end}
+footer .lnk a{color:var(--ice);text-decoration:none;font-weight:800}footer .lnk a:hover{color:var(--cyan)}
+footer small{display:block;margin-top:6px;font-size:12.5px;color:#8fa1cc}
+footer small a{color:var(--lav)}
+
+/* reveal: only hidden once JS is running */
+.js .rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+.js .rv.in{opacity:1;transform:none}
+
+@media (max-width:1020px){nav .links a.t{display:none}.ladder{grid-template-columns:1fr 1fr}.ladder .step:first-child{grid-column:1/-1;flex-direction:row}.ladder .step:first-child .pic{aspect-ratio:auto;width:38%}.ladder .step:first-child .tx{padding:20px 20px 20px 46px}.ladder .step:first-child .num{left:-30px;top:50%;margin-top:-30px}.chain{grid-template-columns:1fr 1fr}.flow{grid-template-columns:1fr 1fr}}
+@media (max-width:860px){
+  header{padding:110px 0 56px}
+  .hero{grid-template-columns:1fr;text-align:center}
+  .hero h1 img{margin:0 auto;width:min(80%,360px)}
+  .pitch{margin-left:auto;margin-right:auto}
+  .cta,.pills{justify-content:center}
+  .stage{max-width:560px;width:92%;margin:12px auto 40px}
+  .modes-wrap,.crew,.lore .lin,.faq{grid-template-columns:1fr}
+  .shotcard{min-height:260px}
+  .mnote{display:flex;margin-left:auto;margin-right:auto;text-align:left}
+}
+@media (pointer:coarse){.mnote{display:flex}}
+@media (max-width:620px){
+  nav .bar{height:58px;padding:0 6px 0 12px}nav .brand img{height:38px}.pbtn{font-size:14px;padding:9px 14px 7px}
+  .stats .row{grid-template-columns:1fr 1fr}.stats .s:nth-child(3){border-left:0}.stats .s:nth-child(n+3){border-top:1px solid rgba(169,184,255,.14)}
+  .modes,.extras,.weapons,.maps,.pickups,.chain,.flow{grid-template-columns:1fr}
+  .chain .glass.wide{grid-column:auto;grid-template-columns:1fr}
+  .ladder{grid-template-columns:1fr}
+  .ladder .step:first-child{flex-direction:column}.ladder .step:first-child .pic{width:auto;aspect-ratio:16/9}.ladder .step:first-child .tx{padding:34px 20px 20px}.ladder .step:first-child .num{left:18px;top:-30px;margin-top:0}
+  .roster{gap:8px}.yeti{padding:12px 13px}.yeti h3{font-size:17px}.yeti p{font-size:13px}
+  .icepic{aspect-ratio:16/6!important}
+  .map img{aspect-ratio:16/8}
+  .modes .glass{padding:16px 18px}.modes .glass .tag{margin-bottom:6px}
+  .big{width:100%}
+  .ghost{width:100%;justify-content:center}
+  .inset{width:52%;left:-3%;bottom:-18%}
+  footer .grid{grid-template-columns:1fr}footer .lnk{justify-content:flex-start}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}.js .rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<canvas id="snow" aria-hidden="true"></canvas>
+
+<nav><div class="bar">
+  <a class="brand" href="#top" aria-label="LOOP home"><img src="/landing/img/wordmark.webp" alt="LOOP, Lofi Out Of Patience" width="179" height="120"></a>
+  <div class="links">
+    <a class="t" href="#modes">Modes</a><a class="t" href="#arsenal">Arsenal</a><a class="t" href="#yetis">Yetis</a><a class="t" href="#maps">Maps</a><a class="t" href="#sui">On Sui</a>
+    <a class="pbtn" href="/game">PLAY NOW</a>
+  </div>
+</div></nav>
+
+<main>
+<header id="top">
+  <svg class="ridge" viewBox="0 0 1440 200" preserveAspectRatio="none" aria-hidden="true"><path d="M0 200 L0 150 L120 90 L210 130 L330 40 L450 120 L560 70 L690 140 L820 30 L940 110 L1060 60 L1180 130 L1300 80 L1440 120 L1440 200Z" fill="#163a7a"/><path d="M0 200 L0 170 L160 130 L300 165 L470 110 L640 160 L790 120 L980 170 L1150 125 L1320 160 L1440 140 L1440 200Z" fill="#0f2b5e"/></svg>
+  <div class="wrap hero">
+    <div>
+      <h1><img src="/landing/img/logo.webp" alt="LOOP, Lofi Out Of Patience" width="447" height="348" fetchpriority="high"></h1>
+      <p class="tagline">CHILL VIBES. <span>COLD HITS.</span></p>
+      <p class="pitch">A free snowball battle in the high Himalayas. Eight yetis, three minutes, one very calm yeti who has run out of patience.</p>
+      <div class="cta">
+        <a class="big" href="/game"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M1.5 0.5l10 5.5-10 5.5z" fill="#06183a"/></svg>PLAY NOW</a>
+        <a class="ghost" href="#sui">HOW IT WORKS ON SUI</a>
+      </div>
+      <p class="mnote"><svg viewBox="0 0 24 24" fill="none" stroke="#00D1FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><span>Open on your computer to play. LOOP runs in a desktop browser with keyboard and mouse.</span></p>
+      <div class="pills"><span>Free to play</span><span>No download</span><span>Keyboard and mouse</span><span>Built on Sui devnet</span></div>
+    </div>
+    <div class="stage">
+      <div class="frame"><img src="/landing/img/yetis.webp" alt="Seven yetis lined up at Base Camp under prayer flags" width="1280" height="720"></div>
+      <div class="inset"><img src="/landing/img/leopard.webp" alt="A snow leopard streak reward charging at two yetis" width="1280" height="720"><b>SNOW LEOPARD</b></div>
+    </div>
+  </div>
+</header>
+
+<div class="stats"><div class="wrap"><div class="row rv">
+  <div class="s"><b>8</b><span>Yetis per arena</span></div>
+  <div class="s"><b>3 MIN</b><span>Per match</span></div>
+  <div class="s"><b>4</b><span>Ways to play</span></div>
+  <div class="s"><b>FREE</b><span>No SUI needed</span></div>
+</div></div></div>
+
+<section id="modes"><div class="wrap">
+  <div class="rv"><div class="eyebrow">WHAT IT IS</div>
+  <h2>Snowball fights with no rules about manners</h2>
+  <p class="lead">Arena battles for up to eight players. Every match lasts three minutes and starts loud. Most bonks wins.</p></div>
+  <div class="modes-wrap">
+    <div class="modes">
+      <div class="glass rv"><span class="tag">8 PLAYERS</span><h3>Free for all</h3><p>Eight yetis, every paw for itself. Most bonks wins.</p></div>
+      <div class="glass rv"><span class="tag">4 V 4</span><h3>Teams</h3><p>Red against blue. No friendly fire. The team with more bonks wins.</p></div>
+      <div class="glass rv"><span class="tag">4 V 4</span><h3>Capture the crystal</h3><p>Steal the other team's crystal and carry it to your cave. First to three.</p></div>
+      <div class="glass rv"><span class="tag">2 PLAYERS</span><h3>1 v 1</h3><p>One rival, no excuses. You fight a bot until someone shows up.</p></div>
+    </div>
+    <div class="shotcard rv"><img src="/landing/img/menu.webp" alt="The LOOP home screen with a live match running behind the menu" width="1280" height="720" loading="lazy"><div class="cap"><h3>Press play, land in a fight</h3><p>The home screen is a live arena. Pick a mode, pick your yeti, go.</p></div></div>
+  </div>
+  <div class="extras">
+    <div class="glass rv"><div class="ic"><svg viewBox="0 0 24 24"><rect x="5" y="8" width="14" height="11" rx="3"/><path d="M12 4v4M9 13h.01M15 13h.01M9 16h6"/></svg></div><div><h3>Bots fill empty seats</h3><p>Never wait in a lobby. If a room is not full, bots jump in and step aside when real players arrive.</p></div></div>
+    <div class="glass rv"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 19c0-3 3-5 6-5s6 2 6 5"/><path d="M16 6h5M16 10h5M18.5 3.5v9"/></svg></div><div><h3>Rooms with friends</h3><p>Make a room and share the code. Your friends type it in and you are all on the same mountain.</p></div></div>
+  </div>
+</div></section>
+
+<section id="arsenal" class="arsenal"><div class="wrap">
+  <div class="rv"><div class="eyebrow">THE ARSENAL</div>
+  <h2>Everything here is cold</h2>
+  <p class="lead">Keep it simple, aim for the head, and stay alive long enough for the mountain to help you.</p></div>
+  <div class="weapons">
+    <div class="glass wcard rv"><img src="/landing/img/train.webp" alt="A yeti walking through Base Camp in training" width="1280" height="590" loading="lazy"><div class="tx"><h3>Snowballs</h3><p>Hold the mouse button and keep the snow coming. Aim with care, because headshots hurt double.</p></div></div>
+    <div class="glass wcard rv"><img src="/landing/img/bomb.webp" alt="Ice bombs flying at two yetis in the Khumbu Icefall" width="1280" height="720" loading="lazy"><div class="tx"><h3>Ice bombs</h3><p>Press G and lob one into a crowd. Anyone caught in the blast gets frozen. Great for yetis who hide behind ice blocks.</p></div></div>
+  </div>
+
+  <h3 class="streak-h rv">Bonk in a row, unlock the mountain</h3>
+  <div class="ladder">
+    <div class="glass step rv"><div class="pic icepic"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="36" r="20" fill="#cfefff" stroke="#00D1FF" stroke-width="3"/><path d="M32 16v-8M28 10l4-4 4 4" stroke="#E6F1FF" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M22 34l6 4M42 34l-6 4M32 44v-8" stroke="#2A6BFF" stroke-width="3" stroke-linecap="round"/></svg></div><div class="tx"><div class="num">2</div><small>2 BONKS IN A ROW</small><h3>Extra ice bomb</h3><p>A spare bomb lands in your paw.</p></div></div>
+    <div class="glass step rv"><div class="pic"><img src="/landing/img/leopard.webp" alt="A snow leopard released as a streak reward" width="1280" height="720" loading="lazy"></div><div class="tx"><div class="num">4</div><small>4 BONKS IN A ROW</small><h3>Snow leopard</h3><p>A snow leopard leaps out and hunts the other yetis for you until someone stops it.</p></div></div>
+    <div class="glass step rv"><div class="pic"><img src="/landing/img/avalanche.webp" alt="An avalanche crashing down on the arena" width="1280" height="720" loading="lazy"></div><div class="tx"><div class="num">7</div><small>7 BONKS IN A ROW</small><h3>The avalanche</h3><p>The mountain lets go. Snow buries everyone else in the arena. Everyone but you.</p></div></div>
+  </div>
+
+  <div class="pickups">
+    <div class="glass rv"><div class="ic gold"><svg viewBox="0 0 24 24"><path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9"/></svg></div><div><h3>Golden snow</h3><p>Rapid fire for a few glorious seconds.</p></div></div>
+    <div class="glass rv"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/></svg></div><div><h3>Ice armor</h3><p>Blocks the next three hits.</p></div></div>
+    <div class="glass rv"><div class="ic hot"><svg viewBox="0 0 24 24"><path d="M4 14h16c0 3.5-3.5 6-8 6s-8-2.5-8-6z"/><path d="M8 10c0-1 1-1.5 1-2.5S8 6 8 5M12 10c0-1 1-1.5 1-2.5S12 6 12 5M16 10c0-1 1-1.5 1-2.5S16 6 16 5"/></svg></div><div><h3>Hot momos</h3><p>Fresh from the kitchen. Restores health.</p></div></div>
+  </div>
+</div></section>
+
+<section id="yetis"><div class="wrap">
+  <div class="rv"><div class="eyebrow">THE YETIS</div>
+  <h2>Eight yetis, eight attitudes</h2>
+  <p class="lead">Same fur, very different personalities. Pick the one that matches your mood.</p></div>
+  <div class="crew">
+    <div>
+      <div class="frame rv"><img src="/landing/img/lofi.webp" alt="Lofi the yeti up close, wearing his headphones" width="1280" height="720" loading="lazy"></div>
+      <div class="poses rv"><img src="/landing/img/poses.webp" alt="Three poses of Lofi: a shrug, arms crossed, and a hand up saying stop" width="682" height="276" loading="lazy"></div>
+    </div>
+    <div class="roster">
+      <div class="glass yeti lofi rv"><h3>Lofi</h3><p>Frozen in Himalayan ice for millennia. Woke up chill.</p></div>
+      <div class="glass yeti rv"><h3>Momo</h3><p>Small, round and full of surprises.</p></div>
+      <div class="glass yeti rv"><h3>Tenzing</h3><p>First to the top, every single time.</p></div>
+      <div class="glass yeti rv"><h3>Meru</h3><p>Sharp as the peak he is named after.</p></div>
+      <div class="glass yeti rv"><h3>Chai</h3><p>Runs on butter tea and bad ideas.</p></div>
+      <div class="glass yeti rv"><h3>Blizzard</h3><p>Arrives without warning. Leaves nothing standing.</p></div>
+      <div class="glass yeti rv"><h3>Kangri</h3><p>King of the glacier. Ask him, he will tell you.</p></div>
+      <div class="glass yeti last rv"><h3>Beats</h3><p>Lofi beats to throw snowballs to.</p></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="maps" class="arsenal"><div class="wrap">
+  <div class="rv"><div class="eyebrow">THE MAPS</div>
+  <h2>Four peaks to fight on</h2>
+  <p class="lead">From a sunny base camp to a cave where the lights never come on.</p></div>
+  <div class="maps">
+    <div class="map rv"><img src="/landing/img/basecamp.webp" alt="Base Camp arena with tents and prayer flags under snowy peaks" width="1280" height="470" loading="lazy"><div class="tx"><h3>Base Camp</h3><p>Tents, prayer flags and nowhere to hide for long.</p></div></div>
+    <div class="map rv"><img src="/landing/img/tengboche.webp" alt="Tengboche Monastery under a bright moon" width="1280" height="470" loading="lazy"><div class="tx"><h3>Tengboche Monastery</h3><p>Prayer wheels, golden roofs and a moon over the stupa.</p></div></div>
+    <div class="map rv"><img src="/landing/img/icefall.webp" alt="Khumbu Icefall arena full of ice blocks" width="1280" height="470" loading="lazy"><div class="tx"><h3>Khumbu Icefall</h3><p>A maze of ice blocks. Perfect for ambushes.</p></div></div>
+    <div class="map rv"><img src="/landing/img/icetomb.webp" alt="Lofi's Ice Tomb, a dark cave lit by ice crystals at night" width="1280" height="470" loading="lazy"><div class="tx"><h3>Lofi's Ice Tomb</h3><p>Where Lofi slept for millennia. Dark, cold, and a little personal.</p></div></div>
+  </div>
+  <div class="more rv"><span>MORE PEAKS COMING</span></div>
+</div></section>
+
+<section id="sui" class="sui"><div class="wrap">
+  <div class="rv"><div class="eyebrow">HOW IT WORKS ON SUI</div>
+  <h2>A yeti that remembers every bonk</h2>
+  <p class="lead">LOOP uses Sui so your yeti and your best moments are really yours. No seed phrases, no gas to buy. Built for the hackathon and running on Sui devnet.</p>
+  <div class="badge"><i></i>Live on Sui devnet</div></div>
+  <div class="chain">
+    <div class="glass rv"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg></div><h3>Sign in with Google</h3><p>zkLogin turns your Google account into a Sui wallet. No seed phrase to write down, no extension to install.</p></div>
+    <div class="glass rv"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3c3 4 6 7 6 11a6 6 0 0 1-12 0c0-4 3-7 6-11z"/></svg></div><h3>Sponsored gas</h3><p>Every transaction is paid for by the game. You never need SUI to play.</p></div>
+    <div class="glass rv"><div class="ic"><svg viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg></div><h3>Free tournaments</h3><p>Free entry. The prize pot is sponsored and held by a Move contract, which pays the winners when the bracket ends.</p></div>
+    <div class="glass wide rv"><div class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div><div><h3>Yeti NFTs with their own history</h3><p>Your yeti is an NFT that carries its own kills, wins and level. After each match the server signs the result and the stats are written on chain. Trade your yeti through Kiosk and its record goes with it.</p></div></div>
+    <div class="glass rv"><div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg></div><h3>Clip NFTs on Walrus</h3><p>Your best kill clip is stored on Walrus and minted as a Clip NFT you can keep or show off.</p></div>
+  </div>
+  <div class="flow rv">
+    <div><b>Sign in</b> with Google. zkLogin gives you a Sui address.</div>
+    <div><b>Play a match.</b> Bonks, wins and headshots are counted by the server.</div>
+    <div><b>The server signs</b> the result and gas is sponsored.</div>
+    <div><b>Your Yeti NFT</b> levels up on chain, ready to keep or trade.</div>
+  </div>
+</div></section>
+
+<section class="lore" id="lore"><div class="wrap lin">
+  <div class="rv">
+    <div class="eyebrow">THE LORE</div>
+    <blockquote>Frozen for millennia. Born again in the 21st century. Now <em>out of patience.</em></blockquote>
+    <p>Lofi was trapped in ice deep in the Himalayas long before anyone wrote things down. The ice cracked, the headphones went on, and he woke up chill. Then the other yetis started throwing snowballs.</p>
+  </div>
+  <div class="frame rv"><img src="/landing/img/icetomb.webp" alt="The cave where Lofi was frozen in ice" width="1280" height="470" loading="lazy" style="aspect-ratio:16/9"></div>
+</div></section>
+
+<section id="faq"><div class="wrap">
+  <div class="rv"><div class="eyebrow">QUESTIONS</div><h2>Before you throw</h2></div>
+  <div class="faq">
+    <div class="glass rv"><h3>Is LOOP free?</h3><p>Yes. LOOP is free to play and you never need SUI to play. Gas is sponsored.</p></div>
+    <div class="glass rv"><h3>Can I play on my phone?</h3><p>Not yet. LOOP is built for a desktop browser with keyboard and mouse. Open this page on your computer and press play.</p></div>
+    <div class="glass rv"><h3>Do I need a crypto wallet?</h3><p>No. You sign in with Google and zkLogin gives you a Sui address behind the scenes. No seed phrase, no extension.</p></div>
+    <div class="glass rv"><h3>Is this on Sui mainnet?</h3><p>No. For the CLAY hackathon everything runs on Sui devnet. Yeti NFTs, Clip NFTs and tournament pots are devnet assets with no real money value.</p></div>
+    <div class="glass rv"><h3>Can I play with my friends?</h3><p>Yes. Make a room, share the four letter code and your friends jump straight in. Bots fill any seats that are still empty.</p></div>
+    <div class="glass rv"><h3>What happens when I bonk someone?</h3><p>The server signs the match result and your Yeti NFT records it on chain. Kills, wins and level stay with that yeti, even if you trade it.</p></div>
+  </div>
+</div></section>
+
+<section class="final"><div class="wrap rv">
+  <img src="/landing/img/logo-short.webp" alt="" width="283" height="337" loading="lazy">
+  <h2>Lofi is waiting. Not patiently.</h2>
+  <p class="lead" style="margin:0 auto">Three minutes. Eight yetis. One mountain.</p>
+  <div class="cta">
+    <a class="big" href="/game"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M1.5 0.5l10 5.5-10 5.5z" fill="#06183a"/></svg>PLAY NOW</a>
+  </div>
+  <p class="mnote"><svg viewBox="0 0 24 24" fill="none" stroke="#00D1FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><span>Open on your computer to play.</span></p>
+</div></section>
+</main>
+
+<footer><div class="wrap grid">
+  <div class="fl"><img src="/landing/img/logo-short.webp" alt="LOOP" width="283" height="337" loading="lazy"></div>
+  <div>
+    <p>Made for CLAY, Code Like A Yeti, the Lofi the Yeti hackathon on Sui.</p>
+    <small>Music by Kevin MacLeod (<a href="https://incompetech.com" target="_blank" rel="noopener">incompetech.com</a>), licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">Creative Commons Attribution 4.0</a>.</small>
+  </div>
+  <div class="lnk">
+    <a href="https://lofitheyeti.com" target="_blank" rel="noopener">Lofi the Yeti</a>
+    <a href="https://hackathon.lofitheyeti.com" target="_blank" rel="noopener">CLAY hackathon</a>
+    <a href="https://github.com/klepi21/loop-lofi" target="_blank" rel="noopener">GitHub</a>
+    <a href="/game">Play</a>
+  </div>
+</div></footer>
+
+<script>
+(function(){
+  var d=document.documentElement;d.classList.add('js');
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var els=[].slice.call(document.querySelectorAll('.rv'));
+  if(reduce||!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in')});}
+  else{
+    var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}})},{rootMargin:'0px 0px -8% 0px',threshold:.08});
+    els.forEach(function(e,i){e.style.transitionDelay=((i%4)*60)+'ms';io.observe(e);});
+  }
+  if(reduce)return;
+  var c=document.getElementById('snow'),x=c.getContext('2d'),w,h,dpr,fl=[],run=true;
+  function size(){dpr=Math.min(window.devicePixelRatio||1,2);w=innerWidth;h=innerHeight;c.width=w*dpr;c.height=h*dpr;x.setTransform(dpr,0,0,dpr,0,0);}
+  size();addEventListener('resize',size);
+  var n=Math.round(Math.min(90,Math.max(30,innerWidth/18)));
+  for(var i=0;i<n;i++)fl.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*2.2+.6,s:Math.random()*.6+.25,p:Math.random()*6.28,a:Math.random()*.5+.3});
+  function tick(){
+    if(!run)return;
+    x.clearRect(0,0,w,h);
+    for(var i=0;i<fl.length;i++){var f=fl[i];f.y+=f.s;f.p+=.012;f.x+=Math.sin(f.p)*.35;if(f.y>h+5){f.y=-5;f.x=Math.random()*w;}if(f.x>w+5)f.x=-5;if(f.x<-5)f.x=w+5;
+      x.beginPath();x.arc(f.x,f.y,f.r,0,6.283);x.fillStyle='rgba(230,241,255,'+f.a+')';x.fill();}
+    requestAnimationFrame(tick);
+  }
+  document.addEventListener('visibilitychange',function(){var v=!document.hidden;if(v&&!run){run=true;requestAnimationFrame(tick);}else run=v;});
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{
+  "network": "devnet",
+  "rpc": "https://fullnode.devnet.sui.io:443",
+  "rpcProtocol": "gRPC-web (JSON-RPC is disabled on public fullnodes); GraphQL: https://graphql.devnet.sui.io/graphql",
+  "chainId": "3KRzFSVPYSpQ7dyNAhk3RqXf2KAXo9hZth1KawpKPozq",
+  "packageId": "0xcf6bea687cb7c47f0cf5e27df27f2b849223bec37a9fe91b23e2f310029b1e9a",
+  "registryId": "0x3821ca55c4b224abbce059c22299ce6fcd2325229381e234b9caf4d5454cd1be",
+  "policyId": "0x013b55ca1bbf870d43052763d20979c2702bdfea928d556a94b18c92bb0f6908",
+  "policyCapId": "0x28f981bcdd45f4348ccab408436c3429f554a89f4a7bd9c87f56574708d36a51",
+  "displayIds": {
+    "yeti": "0x58eb38228058a789303422c7cf7d36fd5c321323c4eb4c8c70f9ad535eebdd2f",
+    "clip": "0x65e8ac2a37d6a31b54513db1fbc46ae3e36a9e7261a953ab39740e9a4c47c37e"
+  },
+  "displayCapIds": {
+    "yeti": "0x0cdcc47c2810fb081cc47f53d25cc40abbb3237aa5eef4f2f2faabbd85ffcb08",
+    "clip": "0x3462b98f7480f49bbd4778719a0e9d7618f99eb8ecde603ccbe94ccf0eed8504"
+  },
+  "displayRegistryId": "0xd",
+  "publisherIds": [
+    "0x26293f301b4dfc25fad4ed2676c3018486f7dbbefed6768dbdad8e5ab7a71307",
+    "0x434bc0863685d9c786caa39eb5a259aabd3d29433ae8ee16f178c7960374b643"
+  ],
+  "adminCapId": "0x744c638a70da2f35be939ac6a491df510b09c63507ee8d49e95f5b191a93d8b4",
+  "gameCapId": "0xe28a2eaea9a79ccc210951d1126017604eca9f165b91a342ceaf9152c8c9b428",
+  "upgradeCapId": "0xcb86002bf9aecbb5dfc983bf97ada24c3ce1cfa116c530be6169e5ccaa677e1e",
+  "adminAddress": "0xd596027832e522109c8ec87253186c4cb097d9fe898f78dd141a4bb4a2d34fc6",
+  "gameAddress": "0xf33120a613b69ff8e008d9793daa99db73c13ff2f2d17373745399e2492fd37c",
+  "gamePubkeyHex": "2a0860f4a115066bcbbc58630599882ed71629357d4075f2d95c78d963a8b7b2",
+  "clockId": "0x6",
+  "publishDigest": "DYWea54QDu4BenYXWs8KWY6MYr9GoKKbbF9p4j32zYeJ",
+  "setupDigest": "DrVjDJZWL78yqLaQ4D3yLABuf158Me6JVnFdcsRh1p9w",
+  "publishedAt": "2026-11-18T15:06:14.219Z"
+}

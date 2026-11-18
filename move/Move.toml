@@ -1,0 +1,9 @@
+[package]
+name = "lofi_loop"
+edition = "2024"
+license = "MIT"
+
+[dependencies]
+
+[environments]
+devnet = "227014d4"
